@@ -37,8 +37,25 @@ flutter pub get
 
 3. Add model and labels (required for ML inference):
 
-	- Place your TensorFlow Lite model at `assets/models/model.tflite`
-	- Place your labels file at `assets/labels/labels.txt` (one label per line)
+There is a placeholder `assets/models/model.tflite` in the repo so the app and UI flows can be exercised without a real model.
+
+When you're ready to run real inference, replace the placeholder or point the app to a remote model:
+
+Options:
+
+- Local (recommended):
+	- Overwrite `assets/models/model.tflite` with your real .tflite binary.
+	- Make sure `assets/labels/labels.txt` exists and contains one label per line in the same order as the model outputs.
+
+- Remote URL (convenient for quick testing or CI):
+	- Add `MODEL_REMOTE_URL` to your `.env` file (example `.env` file included as `.env.example`).
+	- Example entry in `.env`:
+
+```
+MODEL_REMOTE_URL=https://example.com/path/to/your_model.tflite
+```
+
+	- The app will try to download the model from that URL at startup and fall back to the local asset if the download fails.
 
 4. Run the app on a connected device or emulator:
 
@@ -69,12 +86,12 @@ _Add screenshots here (place images under `assets/screenshots/` and update this 
 
 ---
 
-If you want, I can create a commit message and push these README changes. I cannot push from this environment — run the following locally to commit and push:
+I updated the README in the repository. You can commit & push locally if you want to edit further, or I can push further edits for you.
+
+Commands to commit & push locally (this repo's default branch is `master`):
 
 ```powershell
 git add README.md
-git commit -m "docs: updated README with project details, features, setup guide, and future improvements"
-git push origin main
+git commit -m "docs: clarify model instructions and remote MODEL_REMOTE_URL usage"
+git push origin master
 ```
-
-If you want me to also prepare a PR or a set of incremental commits for the remaining improvements, tell me which item I should implement next and I will continue.

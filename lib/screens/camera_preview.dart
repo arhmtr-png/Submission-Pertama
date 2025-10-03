@@ -34,6 +34,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
     try {
       await _initializeControllerFuture;
       final XFile file = await _controller.takePicture();
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => ProcessingScreen(imageFile: File(file.path))),

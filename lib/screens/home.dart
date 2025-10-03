@@ -38,6 +38,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () async {
                 try {
                   final cameras = await availableCameras();
+                  if (!context.mounted) return;
                   if (cameras.isNotEmpty) {
                     Navigator.push(
                       context,
@@ -47,6 +48,7 @@ class HomeScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No cameras found')));
                   }
                 } catch (e) {
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to get cameras')));
                 }
               },

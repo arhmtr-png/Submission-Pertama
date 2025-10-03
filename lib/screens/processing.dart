@@ -33,6 +33,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
           _predictionLabel = result.label;
           _confidence = result.confidence;
         });
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
