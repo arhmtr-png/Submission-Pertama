@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+// dart:typed_data is provided via flutter services import below; removed explicit import
 
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -41,12 +41,12 @@ class MLService {
         final resp = await http.get(uri).timeout(const Duration(seconds: 10));
         if (resp.statusCode == 200 && resp.bodyBytes.isNotEmpty) {
           _modelBytes = resp.bodyBytes;
-          print('MLService: loaded remote model from $remote');
+          debugPrint('MLService: loaded remote model from $remote');
         }
       }
     } catch (e) {
       // ignore and fallback to asset
-      print('MLService: remote model fetch failed: $e');
+      debugPrint('MLService: remote model fetch failed: $e');
     }
 
     // Fallback to bundled asset model

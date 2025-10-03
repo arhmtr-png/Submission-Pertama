@@ -74,7 +74,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
               const SizedBox(height: 12),
               const Text('Nutrition', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              if (_nutrition != null) ..._nutrition!.entries.map((e) => Text('${e.key}: ${e.value}')).toList() else const Text('No nutrition data.'),
+              if (_nutrition != null) ..._nutrition!.entries.map((e) => Text('${e.key}: ${e.value}')) else const Text('No nutrition data.'),
             ]
           ],
         ),
