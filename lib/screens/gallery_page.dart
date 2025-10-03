@@ -20,7 +20,10 @@ class _GalleryPageState extends State<GalleryPage> {
 
   String _query = '';
 
-  List<Map<String, String>> get filtered => items.where((it) => it['title']!.toLowerCase().contains(_query.toLowerCase())).toList();
+  List<Map<String, String>> get filtered => items.where((it) {
+        final q = _query.toLowerCase();
+        return it['title']!.toLowerCase().contains(q) || it['subtitle']!.toLowerCase().contains(q);
+      }).toList();
 
   @override
   Widget build(BuildContext context) {

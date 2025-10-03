@@ -23,8 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
       // For demo we treat any non-empty email/password as success
+      final timestamp = DateTime.now().toIso8601String();
       Navigator.pushNamed(context, '/results', arguments: {
         'email': _emailController.text.trim(),
+        'timestamp': timestamp,
       });
     } else {
       Navigator.pushNamed(context, '/error', arguments: 'Please fill all required fields.');

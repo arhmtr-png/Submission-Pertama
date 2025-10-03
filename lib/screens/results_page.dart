@@ -9,13 +9,15 @@ class ResultsPage extends StatefulWidget {
 
 class _ResultsPageState extends State<ResultsPage> {
   String email = '';
+  String timestamp = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Map && args['email'] != null) {
-      email = args['email'] as String;
+    if (args is Map) {
+      if (args['email'] != null) email = args['email'] as String;
+      if (args['timestamp'] != null) timestamp = args['timestamp'] as String;
     }
   }
 
@@ -35,9 +37,11 @@ class _ResultsPageState extends State<ResultsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hello, ${email.isNotEmpty ? email : 'Guest'}',
+                  'Welcome, ${email.isNotEmpty ? email : 'Guest'}!',
                   style: TextStyle(fontSize: screenWidth < 600 ? 20 : 28, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 8),
+                if (timestamp.isNotEmpty) Text('Last login: $timestamp', style: TextStyle(fontSize: screenWidth < 600 ? 12 : 14, color: Colors.grey[700])),
                 const SizedBox(height: 12),
                 Text(
                   'This is a sample results/content page. You can display personalized content here based on user input.',
