@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ResultsPage extends StatefulWidget {
-  const ResultsPage({super.key});
+  final String? email;
+  final String? timestamp;
+
+  const ResultsPage({super.key, this.email, this.timestamp});
 
   @override
   State<ResultsPage> createState() => _ResultsPageState();
@@ -15,6 +18,8 @@ class _ResultsPageState extends State<ResultsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
+    if (widget.email != null && email.isEmpty) email = widget.email!;
+    if (widget.timestamp != null && timestamp.isEmpty) timestamp = widget.timestamp!;
     if (args is Map) {
       if (args['email'] != null) email = args['email'] as String;
       if (args['timestamp'] != null) timestamp = args['timestamp'] as String;

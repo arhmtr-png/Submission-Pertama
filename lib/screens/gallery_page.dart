@@ -8,19 +8,45 @@ class GalleryPage extends StatefulWidget {
 }
 
 class _GalleryPageState extends State<GalleryPage> {
-  final List<Map<String, String>> items = List.generate(
-    8,
-    (i) => {
-      'title': 'Image ${i + 1}',
-      'subtitle': 'Description ${i + 1}',
-      // using same welcome image as placeholder; users can replace with actual assets
-      'asset': 'assets/welcome.png',
-    },
-  );
-
+  final ScrollController _controller = ScrollController();
+  final List<Map<String, String>> _items = [];
+  bool _loadingMore = false;
   String _query = '';
 
-  List<Map<String, String>> get filtered => items.where((it) {
+  @override
+  void initState() {
+    super.initState();
+    _loadMore();
+    _controller.addListener(() {
+      if (_controller.position.pixels > _controller.position.maxScrollExtent - 200 && !_loadingMore) {
+        _loadMore();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _loadMore() async {
+    setState(() => _loadingMore = true);
+    // simulate network / loading delay
+    await Future.delayed(const Duration(milliseconds: 300));
+    final start = _items.length;
+    final newItems = List.generate(8, (i) => {
+          'title': 'Image ${start + i + 1}',
+          'subtitle': 'Description ${start + i + 1}',
+          'asset': 'assets/welcome.png',
+        });
+    setState(() {
+      _items.addAll(newItems);
+      _loadingMore = false;
+    });
+  }
+
+  List<Map<String, String>> get _filtered => _items.where((it) {
         final q = _query.toLowerCase();
         return it['title']!.toLowerCase().contains(q) || it['subtitle']!.toLowerCase().contains(q);
       }).toList();
@@ -44,41 +70,54 @@ class _GalleryPageState extends State<GalleryPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: GridView.count(
-          crossAxisCount: crossAxis,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          children: filtered.map((it) {
-            return Card(
-              clipBehavior: Clip.hardEdge,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Image.asset(
-                      it['asset']!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: Colors.grey[300],
-                        child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                controller: _controller,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxis,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: _filtered.length,
+                itemBuilder: (context, index) {
+                  final it = _filtered[index];
+                  return Card(
+                    clipBehavior: Clip.hardEdge,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(it['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Text(it['subtitle']!, style: const TextStyle(fontSize: 12)),
+                        Expanded(
+                          child: Image.asset(
+                            it['asset']!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: Colors.grey[300],
+                              child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(it['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 4),
+                              Text(it['subtitle']!, style: const TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
+                  );
+                },
               ),
-            );
-          }).toList(),
+            ),
+            if (_loadingMore) const Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+          ],
         ),
       ),
     );

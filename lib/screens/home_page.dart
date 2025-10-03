@@ -17,9 +17,10 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                   Text(
                     'Belajar Membuat Aplikasi Flutter untuk Pemula',
                     style: TextStyle(
@@ -62,7 +63,8 @@ class HomePage extends StatelessWidget {
                     child: const Text('Open Gallery'),
                   ),
                 ],
-              );
+              ),
+            );
             },
           ),
         ),
