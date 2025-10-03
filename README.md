@@ -26,7 +26,7 @@ A simple Flutter mobile app demonstrating stateless and stateful widgets, naviga
    ```
    git clone <your-repo-link>
    ```
-2. Add your image to `assets/welcome.png`.
+2. (Optional — placeholder) Add `assets/welcome.png` to show the welcome image. If not present, the app uses a fallback icon.
 3. Install dependencies:
    ```
    flutter pub get
@@ -35,6 +35,16 @@ A simple Flutter mobile app demonstrating stateless and stateful widgets, naviga
    ```
    flutter run
    ```
+
+## Progress
+- Home Screen: Implemented (Stateless)
+- Login Screen: Implemented (Stateful) — validation and navigation to Results or Error implemented.
+- Gallery Screen: Added (Stateful) — responsive GridView and search UI added. (Replace placeholder assets for a richer gallery.)
+- Results Screen: Added (Stateful) — displays email passed from Login.
+- Error Page: Added (Stateful) — shows validation messages.
+
+## Notes
+- If you add `assets/welcome.png`, re-enable it in `pubspec.yaml` under `flutter: assets:` and run `flutter pub get`.
 
 ## Project Structure
 - `lib/`: Dart source files.
