@@ -1,3 +1,4 @@
+
 # Food Recognizer App
 
 This repository contains the Food Recognizer Flutter application. The app uses a TensorFlow Lite model to classify food images captured by the camera or selected from the gallery. After prediction, it fetches recipe details from MealDB API.

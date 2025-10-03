@@ -1,0 +1,11 @@
+Pizza
+Burger
+Pasta
+Sushi
+Steak
+Salad
+Ice Cream
+Fried Chicken
+Donut
+Cheeseburger
+...
