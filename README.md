@@ -46,6 +46,41 @@ A simple Flutter mobile app demonstrating stateless and stateful widgets, naviga
 ## Notes
 - If you add `assets/welcome.png`, re-enable it in `pubspec.yaml` under `flutter: assets:` and run `flutter pub get`.
 
+## Bundling Fonts
+To bundle Montserrat and Roboto locally, add the TTF files under `assets/fonts/` with the names used in `pubspec.yaml`:
+
+- `assets/fonts/Montserrat-Regular.ttf`
+- `assets/fonts/Montserrat-Bold.ttf`
+- `assets/fonts/Roboto-Regular.ttf`
+- `assets/fonts/Roboto-Bold.ttf`
+
+After adding them, run:
+
+```powershell
+flutter pub get
+```
+
+If you'd like to download the fonts automatically (Windows PowerShell), run this script from the repository root. It will fetch official TTFs from the Google Fonts GitHub repository and save them to `assets/fonts/`:
+
+```powershell
+# run from project root (PowerShell)
+$urls = @{
+   'Montserrat-Regular' = 'https://github.com/google/fonts/raw/main/ofl/montserrat/Montserrat-Regular.ttf';
+   'Montserrat-Bold' = 'https://github.com/google/fonts/raw/main/ofl/montserrat/Montserrat-Bold.ttf';
+   'Roboto-Regular' = 'https://github.com/google/fonts/raw/main/apache/roboto/Roboto-Regular.ttf';
+   'Roboto-Bold' = 'https://github.com/google/fonts/raw/main/apache/roboto/Roboto-Bold.ttf'
+}
+New-Item -ItemType Directory -Path .\assets\fonts -Force | Out-Null
+foreach ($k in $urls.Keys) {
+   $out = Join-Path -Path .\assets\fonts -ChildPath ($k + '.ttf')
+   Invoke-WebRequest -Uri $urls[$k] -OutFile $out -UseBasicParsing
+}
+```
+
+Note: If your network or environment blocks raw downloads, download the files manually from https://fonts.google.com/ and place them in `assets/fonts/`.
+
+The app theme will then use these bundled fonts.
+
 ## Project Structure
 - `lib/`: Dart source files.
 - `assets/`: Images and media.
