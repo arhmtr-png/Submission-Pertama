@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_page.dart';
 import 'screens/details_page.dart';
 import 'screens/login_page.dart';
@@ -22,6 +21,8 @@ class SubmissionPertamaApp extends StatelessWidget {
         primaryColor: const Color(0xFF0D47A1), // dark blue header
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.cyan).copyWith(secondary: const Color(0xFF00BCD4)),
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+        // Use Roboto as default body font and Montserrat for headlines if available (bundle TTFs to enable)
+        fontFamily: 'Roboto',
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF00BCD4), // cyan primary button
@@ -29,15 +30,19 @@ class SubmissionPertamaApp extends StatelessWidget {
             minimumSize: const Size(64, 52),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            textStyle: GoogleFonts.roboto(fontSize: 16, fontWeight: FontWeight.w600),
+            textStyle: const TextStyle(fontFamily: 'Roboto', fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
-        textTheme: TextTheme(
-          headlineLarge: GoogleFonts.montserrat(fontSize: 32, fontWeight: FontWeight.bold),
-          bodyLarge: GoogleFonts.roboto(fontSize: 16),
-          bodyMedium: GoogleFonts.roboto(fontSize: 14),
+        textTheme: const TextTheme(
+          // Montserrat for large headings (falls back to a system font if not bundled)
+          headlineLarge: TextStyle(fontFamily: 'Montserrat', fontSize: 32, fontWeight: FontWeight.bold),
+          headlineMedium: TextStyle(fontFamily: 'Montserrat', fontSize: 24, fontWeight: FontWeight.w700),
+          bodyLarge: TextStyle(fontSize: 16),
+          bodyMedium: TextStyle(fontSize: 14),
         ),
-        appBarTheme: AppBarTheme(titleTextStyle: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white)),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(fontFamily: 'Montserrat', fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
+        ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
@@ -45,7 +50,13 @@ class SubmissionPertamaApp extends StatelessWidget {
         '/': (context) => const HomePage(),
         '/details': (context) => const DetailsPage(),
         '/login': (context) => const LoginPage(),
-        '/results': (context) => const ResultsPage(),
+        '/results': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>?;
+          return ResultsPage(
+            email: args != null && args['email'] != null ? args['email'] as String : null,
+            timestamp: args != null && args['timestamp'] != null ? args['timestamp'] as String : null,
+          );
+        },
         '/gallery': (context) => const GalleryPage(),
         '/error': (context) => const ErrorPage(),
       },
