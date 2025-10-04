@@ -50,51 +50,69 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(),
-                    ),
+                  Semantics(
+                    label: 'Email field',
+                    textField: true,
+                    child: TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.email),
+                        border: OutlineInputBorder(),
+                      ),
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) return 'Email is required';
                       if (!v.contains('@')) return 'Enter a valid email';
                       return null;
                     },
                   ),
+                  ),
                   const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscure,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
-                        onPressed: () => setState(() => _obscure = !_obscure),
+                  Semantics(
+                    label: 'Password field',
+                    textField: true,
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscure,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: const Icon(Icons.lock),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          tooltip: _obscure ? 'Show password' : 'Hide password',
+                          icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                          onPressed: () => setState(() => _obscure = !_obscure),
+                        ),
                       ),
-                    ),
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Password is required';
                       if (v.length < 4) return 'Password too short';
                       return null;
                     },
                   ),
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     height: 48,
-                    child: ElevatedButton(
-                      onPressed: _submit,
-                      child: const Text('Sign In'),
+                    child: Semantics(
+                      button: true,
+                      label: 'Sign In',
+                      child: ElevatedButton(
+                        key: const Key('login_submit'),
+                        onPressed: _submit,
+                        child: const Text('Sign In'),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Back'),
+                  Semantics(
+                    button: true,
+                    label: 'Back',
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Back'),
+                    ),
                   ),
                 ],
               ),

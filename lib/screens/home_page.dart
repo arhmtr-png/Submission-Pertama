@@ -36,31 +36,44 @@ class HomePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
-                  Image.asset(
-                    'assets/welcome.png',
-                    width: screenWidth < 600 ? 140 : 220,
-                    height: screenWidth < 600 ? 140 : 220,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Container(
+                  Semantics(
+                    label: 'Welcome image',
+                    child: Image.asset(
+                      'assets/welcome.png',
                       width: screenWidth < 600 ? 140 : 220,
                       height: screenWidth < 600 ? 140 : 220,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: screenWidth < 600 ? 140 : 220,
+                        height: screenWidth < 600 ? 140 : 220,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: screenWidth < 600 ? double.infinity : 300,
                     height: 48,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      child: const Text('Sign In'),
+                    child: Semantics(
+                      button: true,
+                      label: 'Sign In',
+                      child: ElevatedButton(
+                        key: const Key('home_sign_in'),
+                        onPressed: () => Navigator.pushNamed(context, '/login'),
+                        child: const Text('Sign In'),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/gallery'),
-                    child: const Text('Open Gallery'),
+                  Semantics(
+                    button: true,
+                    label: 'Open Gallery',
+                    child: TextButton(
+                      key: const Key('home_open_gallery'),
+                      onPressed: () => Navigator.pushNamed(context, '/gallery'),
+                      child: const Text('Open Gallery'),
+                    ),
                   ),
                 ],
               ),

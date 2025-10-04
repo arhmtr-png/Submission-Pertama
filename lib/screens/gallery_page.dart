@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -38,7 +39,7 @@ class _GalleryPageState extends State<GalleryPage> {
     final newItems = List.generate(8, (i) => {
           'title': 'Image ${start + i + 1}',
           'subtitle': 'Description ${start + i + 1}',
-          'asset': 'assets/welcome.png',
+          'url': 'https://picsum.photos/seed/${start + i + 1}/600/400',
         });
     setState(() {
       _items.addAll(newItems);
@@ -59,12 +60,17 @@ class _GalleryPageState extends State<GalleryPage> {
       appBar: AppBar(
         title: const Text('Gallery'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () async {
-              final result = await showSearch<String?>(context: context, delegate: _SimpleSearchDelegate());
-              if (result != null) setState(() => _query = result);
-            },
+          Semantics(
+            button: true,
+            label: 'Search images',
+            child: IconButton(
+              tooltip: 'Search images',
+              icon: const Icon(Icons.search),
+              onPressed: () async {
+                final result = await showSearch<String?>(context: context, delegate: _SimpleSearchDelegate());
+                if (result != null) setState(() => _query = result);
+              },
+            ),
           )
         ],
       ),
@@ -90,12 +96,19 @@ class _GalleryPageState extends State<GalleryPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Expanded(
-                          child: Image.asset(
-                            it['asset']!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Container(
-                              color: Colors.grey[300],
-                              child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                          child: Semantics(
+                            image: true,
+                            label: it['title'],
+                            child: FadeInImage(
+                              placeholder: MemoryImage(
+                                const Base64Decoder().convert('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMBAJ+YbZkAAAAASUVORK5CYII='),
+                              ),
+                              image: NetworkImage(it['url']!),
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (context, error, stackTrace) => Container(
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
+                              ),
                             ),
                           ),
                         ),

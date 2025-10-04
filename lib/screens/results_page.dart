@@ -41,9 +41,13 @@ class _ResultsPageState extends State<ResultsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Welcome, ${email.isNotEmpty ? email : 'Guest'}!',
-                  style: TextStyle(fontSize: screenWidth < 600 ? 20 : 28, fontWeight: FontWeight.bold),
+                Semantics(
+                  header: true,
+                  label: 'Welcome message',
+                  child: Text(
+                    'Welcome, ${email.isNotEmpty ? email : 'Guest'}!',
+                    style: TextStyle(fontSize: screenWidth < 600 ? 20 : 28, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 8),
                 if (timestamp.isNotEmpty) Text('Last login: $timestamp', style: TextStyle(fontSize: screenWidth < 600 ? 12 : 14, color: Colors.grey[700])),
@@ -53,14 +57,22 @@ class _ResultsPageState extends State<ResultsPage> {
                   style: TextStyle(fontSize: screenWidth < 600 ? 14 : 16),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/gallery'),
-                  child: const Text('Open Gallery'),
+                Semantics(
+                  button: true,
+                  label: 'Open Gallery',
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/gallery'),
+                    child: const Text('Open Gallery'),
+                  ),
                 ),
                 const SizedBox(height: 12),
-                TextButton(
-                  onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/')),
-                  child: const Text('Back to Home'),
+                Semantics(
+                  button: true,
+                  label: 'Back to Home',
+                  child: TextButton(
+                    onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/')),
+                    child: const Text('Back to Home'),
+                  ),
                 ),
               ],
             ),

@@ -32,13 +32,24 @@ class _ErrorPageState extends State<ErrorPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red[700]),
+                Semantics(
+                  label: 'Error',
+                  child: Icon(Icons.error_outline, size: 64, color: Colors.red[700]),
+                ),
                 const SizedBox(height: 12),
-                Text(message, style: TextStyle(fontSize: screenWidth < 600 ? 16 : 20), textAlign: TextAlign.center),
+                Semantics(
+                  liveRegion: true,
+                  label: 'Error message',
+                  child: Text(message, style: TextStyle(fontSize: screenWidth < 600 ? 16 : 20), textAlign: TextAlign.center),
+                ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Back'),
+                Semantics(
+                  button: true,
+                  label: 'Back',
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Back'),
+                  ),
                 ),
               ],
             ),
