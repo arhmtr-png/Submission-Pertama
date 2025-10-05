@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../services/api_service.dart';
 import '../providers/restaurant_detail_provider.dart';
 import '../widgets/error_retry.dart';
+import '../models/restaurant_detail.dart';
+import '../utils/result.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final String id;
@@ -50,14 +52,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
         appBar: AppBar(title: Text(widget.name)),
         body: Consumer<RestaurantDetailProvider>(
           builder: (context, provider, _) {
-            if (provider.state == DetailState.loading) {
+            final result = provider.detailResult;
+            if (result is Loading<RestaurantDetail>) {
               return const Center(child: CircularProgressIndicator());
-            } else if (provider.state == DetailState.error) {
+            } else if (result is ErrorResult<RestaurantDetail>) {
               return ErrorRetry(
-                message: 'Failed to load detail. ${provider.message}',
+                message: 'Failed to load detail. ${result.message}',
                 onRetry: () => provider.fetchDetail(widget.id),
               );
-            } else if (provider.state == DetailState.hasData &&
+            } else if (result is Success<RestaurantDetail> &&
                 provider.detail != null) {
               final detail = provider.detail!;
               return SingleChildScrollView(

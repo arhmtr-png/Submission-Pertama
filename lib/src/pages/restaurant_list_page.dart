@@ -4,6 +4,7 @@ import '../providers/restaurant_provider.dart';
 import '../models/restaurant_summary.dart';
 import 'restaurant_detail_page.dart';
 import '../widgets/error_retry.dart';
+import '../utils/result.dart';
 
 class RestaurantListPage extends StatefulWidget {
   const RestaurantListPage({super.key});
@@ -49,13 +50,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
           Expanded(
             child: Consumer<RestaurantProvider>(
               builder: (context, provider, _) {
-                if (provider.state == RestaurantState.loading) {
+                final result = provider.listResult;
+                if (result is Loading<List<RestaurantSummary>>) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (provider.state == RestaurantState.hasData) {
-                  final List<RestaurantSummary> restaurants =
-                      provider.searchResults.isNotEmpty
+                } else if (result is Success<List<RestaurantSummary>>) {
+                  final restaurants = provider.searchResults.isNotEmpty
                       ? provider.searchResults
-                      : provider.restaurants;
+                      : result.data;
                   return ListView.builder(
                     itemCount: restaurants.length,
                     itemBuilder: (context, index) {
@@ -114,9 +115,9 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       );
                     },
                   );
-                } else if (provider.state == RestaurantState.error) {
+                } else if (result is ErrorResult<List<RestaurantSummary>>) {
                   return ErrorRetry(
-                    message: 'Failed to load data. ${provider.message}',
+                    message: 'Failed to load data. ${result.message}',
                     onRetry: () => provider.fetchRestaurants(),
                   );
                 }

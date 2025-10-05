@@ -1,32 +1,39 @@
 import 'package:flutter/foundation.dart';
 import '../models/restaurant_detail.dart';
 import '../services/api_service.dart';
-
-enum DetailState { idle, loading, hasData, error }
+import '../utils/result.dart';
 
 class RestaurantDetailProvider with ChangeNotifier {
   final ApiService apiService;
 
   RestaurantDetailProvider({required this.apiService});
 
-  DetailState _state = DetailState.idle;
-  RestaurantDetail? _detail;
-  String _message = '';
+  Result<RestaurantDetail> _detailResult = const Loading();
 
-  DetailState get state => _state;
-  RestaurantDetail? get detail => _detail;
-  String get message => _message;
+  Result<RestaurantDetail> get detailResult => _detailResult;
+
+  RestaurantDetail? get detail {
+    if (_detailResult is Success<RestaurantDetail>) {
+      return (_detailResult as Success<RestaurantDetail>).data;
+    }
+    return null;
+  }
+
+  String get errorMessage {
+    if (_detailResult is ErrorResult<RestaurantDetail>) {
+      return (_detailResult as ErrorResult<RestaurantDetail>).message;
+    }
+    return '';
+  }
 
   Future<void> fetchDetail(String id) async {
-    _state = DetailState.loading;
+    _detailResult = const Loading();
     notifyListeners();
     try {
       final d = await apiService.fetchRestaurantDetail(id);
-      _detail = d;
-      _state = DetailState.hasData;
+      _detailResult = Success(d);
     } catch (e) {
-      _message = e.toString();
-      _state = DetailState.error;
+      _detailResult = ErrorResult(e.toString());
     }
     notifyListeners();
   }
@@ -39,7 +46,6 @@ class RestaurantDetailProvider with ChangeNotifier {
         review: review,
       );
       if (ok) {
-        // Refresh detail to get latest reviews
         await fetchDetail(id);
       }
       return ok;

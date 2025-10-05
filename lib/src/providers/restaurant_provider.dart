@@ -1,35 +1,41 @@
 import 'package:flutter/foundation.dart';
 import '../models/restaurant_summary.dart';
 import '../services/api_service.dart';
-
-enum RestaurantState { idle, loading, hasData, error }
+import '../utils/result.dart';
 
 class RestaurantProvider with ChangeNotifier {
   final ApiService apiService;
 
   RestaurantProvider({required this.apiService});
 
-  RestaurantState _state = RestaurantState.idle;
-  List<RestaurantSummary> _restaurants = [];
-  String _message = '';
+  Result<List<RestaurantSummary>> _listResult = const Loading();
   List<RestaurantSummary> _searchResults = [];
 
+  Result<List<RestaurantSummary>> get listResult => _listResult;
   List<RestaurantSummary> get searchResults => _searchResults;
 
-  RestaurantState get state => _state;
-  List<RestaurantSummary> get restaurants => _restaurants;
-  String get message => _message;
+  List<RestaurantSummary> get restaurants {
+    if (_listResult is Success<List<RestaurantSummary>>) {
+      return (_listResult as Success<List<RestaurantSummary>>).data;
+    }
+    return [];
+  }
+
+  String get errorMessage {
+    if (_listResult is ErrorResult<List<RestaurantSummary>>) {
+      return (_listResult as ErrorResult<List<RestaurantSummary>>).message;
+    }
+    return '';
+  }
 
   Future<void> fetchRestaurants() async {
-    _state = RestaurantState.loading;
+    _listResult = const Loading();
     notifyListeners();
     try {
       final result = await apiService.fetchRestaurantList();
-      _restaurants = result;
-      _state = RestaurantState.hasData;
+      _listResult = Success(result);
     } catch (e) {
-      _message = e.toString();
-      _state = RestaurantState.error;
+      _listResult = ErrorResult(e.toString());
     }
     notifyListeners();
   }
@@ -40,15 +46,14 @@ class RestaurantProvider with ChangeNotifier {
       notifyListeners();
       return;
     }
-    _state = RestaurantState.loading;
+    _listResult = const Loading();
     notifyListeners();
     try {
       final results = await apiService.searchRestaurants(query);
       _searchResults = results;
-      _state = RestaurantState.hasData;
+      _listResult = Success(results);
     } catch (e) {
-      _message = e.toString();
-      _state = RestaurantState.error;
+      _listResult = ErrorResult(e.toString());
     }
     notifyListeners();
   }
