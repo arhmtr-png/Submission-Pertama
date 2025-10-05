@@ -16,7 +16,6 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch restaurants after first frame to avoid using BuildContext across async gaps
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<RestaurantProvider>(
         context,
@@ -62,19 +61,44 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     itemBuilder: (context, index) {
                       final item = restaurants[index];
                       return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         leading: Hero(
                           tag: item.id,
-                          child: item.pictureId.isNotEmpty
-                              ? Image.network(
-                                  'https://restaurant-api.dicoding.dev/images/medium/${item.pictureId}',
-                                  width: 56,
-                                  height: 56,
-                                  fit: BoxFit.cover,
-                                )
-                              : const SizedBox(width: 56, height: 56),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: item.pictureId.isNotEmpty
+                                ? Image.network(
+                                    'https://restaurant-api.dicoding.dev/images/medium/${item.pictureId}',
+                                    width: 72,
+                                    height: 72,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    width: 72,
+                                    height: 72,
+                                    color: Colors.grey[200],
+                                  ),
+                          ),
                         ),
                         title: Text(item.name),
-                        subtitle: Text('${item.city} • ⭐ ${item.rating}'),
+                        subtitle: Row(
+                          children: [
+                            Expanded(child: Text(item.city)),
+                            const SizedBox(width: 8),
+                            Chip(
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 0,
+                              ),
+                              label: Text('⭐ ${item.rating}'),
+                            ),
+                          ],
+                        ),
                         onTap: () {
                           Navigator.push(
                             context,
