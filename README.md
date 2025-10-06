@@ -90,6 +90,73 @@ Notes:
 - If you prefer not to commit APK binaries to the repository, attach the built APK to your submission platform (or a release) instead and include a download link here.
 - I can generate screenshots locally and add them to the repo if you want — tell me and I'll run the app and capture 2–3 images.
 
+### Uploading the APK to a GitHub Release
+
+Because APK files can exceed Git's single-file push limits, the recommended way to share the built APK is via a GitHub Release.
+
+1. Build the APK on your machine (debug or release):
+
+```powershell
+flutter pub get
+flutter build apk --debug
+# or for release
+flutter build apk --release
+```
+
+2. Create a new release and upload the APK (two options):
+
+- Using the GitHub CLI (recommended):
+
+```powershell
+# Install GitHub CLI (gh) if you don't have it: https://cli.github.com/
+# Create a new tag/release and upload the APK asset (replace <tag> and <title> as desired)
+gh release create v1.0.0 build\app\outputs\flutter-apk\app-debug.apk --title "fundamental v1.0.0" --notes "Debug APK for testing"
+```
+
+- Or manually via the GitHub web UI:
+	1. Open your repository on GitHub.
+	2. Go to the "Releases" tab and click "Draft a new release".
+	3. Choose a tag name (for example v1.0.0), give it a title, and drag the `app-debug.apk` file into the "Attach binaries by dropping them here or selecting them" area.
+	4. Publish the release.
+
+3. Add the download link to this README (replace with your release URL):
+
+```markdown
+[Download APK (debug)](https://github.com/<owner>/<repo>/releases/download/v1.0.0/app-debug.apk)
+```
+
+Keep the APK out of the Git history (don't commit the binary into the repo). Use Releases or external hosting.
+
+### Using a TFLite model or remote model URL
+
+This project currently contains placeholder instructions for a model. If your submission uses a TensorFlow Lite model, follow one of these patterns:
+
+1) Local TFLite model in the repo
+
+- Place the `.tflite` file in `assets/models/` and add the path to `pubspec.yaml` under `flutter.assets:`.
+- Example `pubspec.yaml` snippet:
+
+```yaml
+flutter:
+	assets:
+		- assets/models/your_model.tflite
+```
+
+2) Remote model URL via environment variable
+
+- If you'd like to host the model remotely (recommended to keep repo size small), host the `.tflite` file on a CDN or storage service and point the app to it via an environment variable named `MODEL_REMOTE_URL`.
+- Create a `.env` file in the project root (do NOT commit secrets) and add:
+
+```
+MODEL_REMOTE_URL=https://example.com/path/to/your_model.tflite
+```
+
+- At runtime, have the app download the model from `MODEL_REMOTE_URL` and load the `.tflite` interpreter from the downloaded file. Use packages such as `flutter_dotenv` to load `.env` variables.
+
+Notes:
+- Keep the model file out of the repository if it's large — prefer hosting it externally and referencing it via `MODEL_REMOTE_URL`.
+- If you want, I can add example code to download and load a remote TFLite model (small helper) — tell me and I'll scaffold it.
+
 ## Continuous Integration
 
 A GitHub Actions workflow is included at `.github/workflows/flutter.yml` that runs `flutter analyze` and `flutter test` on pushes and pull requests to `main`.
