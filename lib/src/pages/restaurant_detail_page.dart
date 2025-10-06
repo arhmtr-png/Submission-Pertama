@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/api_service.dart';
 import '../providers/restaurant_detail_provider.dart';
+import '../providers/restaurant_provider.dart';
 import '../widgets/error_retry.dart';
 import '../models/restaurant_detail.dart';
 import '../utils/result.dart';
@@ -10,12 +11,14 @@ class RestaurantDetailPage extends StatefulWidget {
   final String id;
   final String name;
   final String pictureId;
+  final ApiService? apiService;
 
   const RestaurantDetailPage({
     super.key,
     required this.id,
     required this.name,
     required this.pictureId,
+    this.apiService,
   });
 
   @override
@@ -31,10 +34,20 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   @override
   void initState() {
     super.initState();
-    _provider = RestaurantDetailProvider(apiService: ApiService());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _provider.fetchDetail(widget.id);
-    });
+    // Try to obtain ApiService from an existing RestaurantProvider synchronously.
+    final api =
+        widget.apiService ??
+        (() {
+          try {
+            final rp = Provider.of<RestaurantProvider>(context, listen: false);
+            return rp.apiService;
+          } catch (_) {
+            return ApiService();
+          }
+        })();
+    _provider = RestaurantDetailProvider(apiService: api);
+    // Begin fetching detail
+    _provider.fetchDetail(widget.id);
   }
 
   @override

@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
+import 'package:fundamental/src/pages/restaurant_list_page.dart';
+import 'package:fundamental/src/providers/restaurant_provider.dart';
+import 'fake_api_service.dart';
+import 'package:fundamental/src/pages/restaurant_detail_page.dart';
+import 'package:fundamental/src/models/restaurant_summary.dart';
+import 'package:fundamental/src/models/restaurant_detail.dart';
+
+void main() {
+  testWidgets('List page shows items and navigates to detail', (tester) async {
+    final summary = RestaurantSummary(
+      id: 'r1',
+      name: 'List Resto',
+      city: 'City',
+      rating: 4.2,
+      pictureId: '', // avoid network image
+    );
+
+    final detail = RestaurantDetail(
+      id: 'r1',
+      name: 'List Resto',
+      description: 'Description',
+      city: 'City',
+      address: 'Addr',
+      rating: 4.2,
+      foods: [],
+      drinks: [],
+      customerReviews: [],
+    );
+
+    final fake = FakeApiService(summaries: [summary], detailResponse: detail);
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RestaurantProvider>(
+        create: (_) => RestaurantProvider(apiService: fake),
+        child: const MaterialApp(home: RestaurantListPage()),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('List Resto'), findsOneWidget);
+
+    // Tap the tile
+    final tile = find.widgetWithText(ListTile, 'List Resto');
+    await tester.ensureVisible(tile);
+    await tester.tap(tile);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Description'), findsOneWidget);
+  });
+
+  testWidgets('Detail page submit review updates list', (tester) async {
+    final detail = RestaurantDetail(
+      id: 'r2',
+      name: 'Detail Resto',
+      description: 'Desc',
+      city: 'City',
+      address: 'Addr',
+      rating: 4.0,
+      foods: [],
+      drinks: [],
+      customerReviews: [],
+    );
+
+    final fake = FakeApiService(summaries: [], detailResponse: detail);
+
+    // Pump the detail page directly by creating a provider and pushing the page
+    await tester.pumpWidget(
+      ChangeNotifierProvider<RestaurantProvider>(
+        create: (_) => RestaurantProvider(apiService: fake),
+        child: MaterialApp(
+          home: Builder(
+            builder: (context) {
+              return Navigator(
+                onGenerateRoute: (_) => MaterialPageRoute(
+                  builder: (_) => RestaurantDetailPage(
+                    id: detail.id,
+                    name: detail.name,
+                    pictureId: '',
+                    apiService: fake,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Enter review
+    await tester.enterText(find.byType(TextField).at(0), 'Tester');
+    await tester.enterText(find.byType(TextField).at(1), 'Nice');
+    await tester.tap(find.text('Submit Review'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tester'), findsWidgets);
+    expect(find.text('Nice'), findsWidgets);
+  });
+}
