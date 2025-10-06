@@ -43,10 +43,10 @@ void main() {
 
     expect(find.text('List Resto'), findsOneWidget);
 
-  // Tap the restaurant title (Card/InkWell now used)
-  final itemText = find.text('List Resto');
-  expect(itemText, findsOneWidget);
-  await tester.tap(itemText);
+    // Tap the restaurant title (Card/InkWell now used)
+    final itemText = find.text('List Resto');
+    expect(itemText, findsOneWidget);
+    await tester.tap(itemText);
     await tester.pumpAndSettle();
 
     expect(find.text('Description'), findsOneWidget);

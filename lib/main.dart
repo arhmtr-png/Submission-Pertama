@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
 import 'src/services/api_service.dart';
 import 'src/providers/restaurant_provider.dart';
 import 'src/pages/restaurant_list_page.dart';
@@ -38,10 +39,8 @@ class MyApp extends StatelessWidget {
             elevation: 2,
             centerTitle: true,
           ),
-          textTheme:
-              GoogleFonts.robotoTextTheme(
-                ThemeData(useMaterial3: true).textTheme,
-              ).copyWith(
+          textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme)
+              .copyWith(
                 headlineLarge: GoogleFonts.montserrat(
                   textStyle: const TextStyle(
                     fontSize: 28,
@@ -64,18 +63,7 @@ class MyApp extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 14),
                 ),
               ),
-          cardTheme: CardThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 2,
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2A5BB1),
-              foregroundColor: ThemeData().colorScheme.onPrimary,
-            ),
-          ),
+          fontFamily: platformFontFamily(),
         ),
         // Dark theme with higher contrast and explicit surface/background roles
         darkTheme: ThemeData(
@@ -155,5 +143,19 @@ class MyApp extends StatelessWidget {
         home: const RestaurantListPage(),
       ),
     );
+  }
+
+  // Choose base font family per platform as requested by reviewer
+  String platformFontFamily() {
+    // Android, Fuchsia, Linux: Roboto
+    if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux)
+      return 'Roboto';
+    // iOS: SF Pro Display/Text
+    if (Platform.isIOS) return 'SF Pro Text';
+    // macOS: .AppleSystemUIFont
+    if (Platform.isMacOS) return '.AppleSystemUIFont';
+    // Windows: Segoe UI
+    if (Platform.isWindows) return 'Segoe UI';
+    return 'Roboto';
   }
 }
