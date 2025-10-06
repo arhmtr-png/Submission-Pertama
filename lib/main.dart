@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xFFFEFBFF),
           appBarTheme: AppBarTheme(
             backgroundColor: Color(0xFF2A5BB1),
-            foregroundColor: Colors.white,
+            foregroundColor: ThemeData().colorScheme.onPrimary,
             elevation: 2,
             centerTitle: true,
           ),
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2A5BB1),
-              foregroundColor: Colors.white,
+              foregroundColor: ThemeData().colorScheme.onPrimary,
             ),
           ),
         ),
@@ -85,9 +85,11 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.dark,
           ),
           scaffoldBackgroundColor: const Color(0xFF0B0B0E),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFF121216),
-            foregroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: const Color(0xFF121216),
+            foregroundColor: ThemeData(
+              brightness: Brightness.dark,
+            ).colorScheme.onPrimary,
             elevation: 2,
             centerTitle: true,
           ),
@@ -99,30 +101,38 @@ class MyApp extends StatelessWidget {
                 ).textTheme,
               ).copyWith(
                 headlineLarge: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: ThemeData(
+                      brightness: Brightness.dark,
+                    ).colorScheme.onSurface,
                   ),
                 ),
                 headlineMedium: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white70,
+                    color: ThemeData(
+                      brightness: Brightness.dark,
+                    ).colorScheme.onSurface.withAlpha(0xCC),
                   ),
                 ),
                 titleLarge: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white70,
+                    color: ThemeData(
+                      brightness: Brightness.dark,
+                    ).colorScheme.onSurface.withAlpha(0xCC),
                   ),
                 ),
                 bodyMedium: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 14,
-                    color: Colors.white70,
+                    color: ThemeData(
+                      brightness: Brightness.dark,
+                    ).colorScheme.onSurface.withAlpha(0xCC),
                   ),
                 ),
               ),
@@ -136,7 +146,9 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF245FA6),
-              foregroundColor: Colors.white,
+              foregroundColor: ThemeData(
+                brightness: Brightness.dark,
+              ).colorScheme.onPrimary,
             ),
           ),
         ),
