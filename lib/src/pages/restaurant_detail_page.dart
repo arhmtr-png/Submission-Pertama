@@ -6,6 +6,7 @@ import '../providers/restaurant_provider.dart';
 import '../widgets/error_retry.dart';
 import '../models/restaurant_detail.dart';
 import '../utils/result.dart';
+import '../widgets/star_rating.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final String id;
@@ -176,35 +177,27 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         children: [
                           Text(detail.name, style: textTheme.headlineSmall),
                           const SizedBox(height: 6),
-                          Semantics(
-                            label:
-                                'Rating: ${detail.rating.toStringAsFixed(1)} out of 5',
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 18,
+                          Row(
+                            children: [
+                              StarRating(rating: detail.rating, size: 18),
+                              const SizedBox(width: 8),
+                              Text(
+                                detail.rating.toStringAsFixed(1),
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                const SizedBox(width: 6),
+                              ),
+                              const SizedBox(width: 8),
+                              if (detail.customerReviews.isNotEmpty)
                                 Text(
-                                  detail.rating.toStringAsFixed(1),
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                  '(${detail.customerReviews.length} reviews)',
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface.withAlpha(0xAA),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                if (detail.customerReviews.isNotEmpty)
-                                  Text(
-                                    '(${detail.customerReviews.length} reviews)',
-                                    style: textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface.withAlpha(0xAA),
-                                    ),
-                                  ),
-                              ],
-                            ),
+                            ],
                           ),
                         ],
                       ),

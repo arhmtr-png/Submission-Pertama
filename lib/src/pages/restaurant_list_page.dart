@@ -5,6 +5,7 @@ import '../models/restaurant_summary.dart';
 import 'restaurant_detail_page.dart';
 import '../widgets/error_retry.dart';
 import '../utils/result.dart';
+import '../widgets/star_rating.dart';
 
 class RestaurantListPage extends StatefulWidget {
   const RestaurantListPage({super.key});
@@ -196,11 +197,23 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                           Chip(
                                             backgroundColor:
                                                 cs.primaryContainer,
-                                            label: Text(
-                                              '⭐ ${item.rating}',
-                                              style: TextStyle(
-                                                color: cs.onPrimaryContainer,
-                                              ),
+                                            label: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                StarRating(
+                                                  rating: item.rating
+                                                      .toDouble(),
+                                                  size: 12,
+                                                ),
+                                                const SizedBox(width: 6),
+                                                Text(
+                                                  item.rating.toString(),
+                                                  style: TextStyle(
+                                                    color:
+                                                        cs.onPrimaryContainer,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
