@@ -67,7 +67,58 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           builder: (context, provider, _) {
             final result = provider.detailResult;
             if (result is Loading<RestaurantDetail>) {
-              return const Center(child: CircularProgressIndicator());
+              // Detail skeleton
+              final mq = MediaQuery.of(context);
+              final isWide = mq.size.width > 700;
+              final imageHeight = isWide ? 320.0 : 220.0;
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      height: imageHeight,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest.withAlpha(0x66),
+                    ),
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 24,
+                            width: 240,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withAlpha(0x66),
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            height: 14,
+                            width: double.infinity,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withAlpha(0x66),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            height: 14,
+                            width: double.infinity,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withAlpha(0x66),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
             } else if (result is ErrorResult<RestaurantDetail>) {
               return ErrorRetry(
                 message: 'Failed to load detail. ${result.message}',
@@ -112,7 +163,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             )
                           : SizedBox(
                               height: imageHeight,
-                              child: Container(color: cs.surfaceVariant),
+                              child: Container(
+                                color: cs.surfaceContainerHighest,
+                              ),
                             ),
                     ),
                     const SizedBox(height: 12),
@@ -132,7 +185,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       child: Text(
                         'Address: ${detail.address} • ${detail.city}',
                         style: textTheme.bodyMedium?.copyWith(
-                          color: cs.onSurface.withOpacity(0.8),
+                          color: cs.onSurface.withAlpha(0xCC),
                         ),
                       ),
                     ),

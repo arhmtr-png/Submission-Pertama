@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/restaurant_summary.dart';
 import '../models/restaurant_detail.dart';
+import '../utils/api_error.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://restaurant-api.dicoding.dev';
@@ -17,7 +18,8 @@ class ApiService {
           .map((e) => RestaurantSummary.fromJson(e as Map<String, dynamic>))
           .toList();
     } else {
-      throw Exception('Failed to load restaurant list');
+      final msg = 'Failed to load restaurant list';
+      throw ApiException(response.statusCode, msg);
     }
   }
 
@@ -30,7 +32,8 @@ class ApiService {
       final detail = data['restaurant'] as Map<String, dynamic>;
       return RestaurantDetail.fromJson(detail);
     } else {
-      throw Exception('Failed to load restaurant detail');
+      final msg = 'Failed to load restaurant detail';
+      throw ApiException(response.statusCode, msg);
     }
   }
 
@@ -45,7 +48,8 @@ class ApiService {
           .map((e) => RestaurantSummary.fromJson(e as Map<String, dynamic>))
           .toList();
     } else {
-      throw Exception('Failed to search restaurants');
+      final msg = 'Failed to search restaurants';
+      throw ApiException(response.statusCode, msg);
     }
   }
 
@@ -65,7 +69,8 @@ class ApiService {
     if (response.statusCode == 201 || response.statusCode == 200) {
       return true;
     } else {
-      return false;
+      final msg = 'Failed to post review';
+      throw ApiException(response.statusCode, msg);
     }
   }
 }

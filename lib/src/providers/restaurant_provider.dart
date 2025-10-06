@@ -35,7 +35,11 @@ class RestaurantProvider with ChangeNotifier {
       final result = await apiService.fetchRestaurantList();
       _listResult = Success(result);
     } catch (e) {
-      _listResult = ErrorResult(e.toString());
+      if (e is Exception) {
+        _listResult = ErrorResult(e.toString());
+      } else {
+        _listResult = const ErrorResult('Unknown error');
+      }
     }
     notifyListeners();
   }
@@ -53,7 +57,11 @@ class RestaurantProvider with ChangeNotifier {
       _searchResults = results;
       _listResult = Success(results);
     } catch (e) {
-      _listResult = ErrorResult(e.toString());
+      if (e is Exception) {
+        _listResult = ErrorResult(e.toString());
+      } else {
+        _listResult = const ErrorResult('Unknown error');
+      }
     }
     notifyListeners();
   }

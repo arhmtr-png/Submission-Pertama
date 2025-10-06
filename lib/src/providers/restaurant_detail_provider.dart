@@ -9,6 +9,9 @@ class RestaurantDetailProvider with ChangeNotifier {
   RestaurantDetailProvider({required this.apiService});
 
   Result<RestaurantDetail> _detailResult = const Loading();
+  bool _submitting = false;
+
+  bool get submitting => _submitting;
 
   Result<RestaurantDetail> get detailResult => _detailResult;
 
@@ -33,12 +36,18 @@ class RestaurantDetailProvider with ChangeNotifier {
       final d = await apiService.fetchRestaurantDetail(id);
       _detailResult = Success(d);
     } catch (e) {
-      _detailResult = ErrorResult(e.toString());
+      if (e is Exception) {
+        _detailResult = ErrorResult(e.toString());
+      } else {
+        _detailResult = const ErrorResult('Unknown error');
+      }
     }
     notifyListeners();
   }
 
   Future<bool> submitReview(String id, String name, String review) async {
+    _submitting = true;
+    notifyListeners();
     try {
       final ok = await apiService.postReview(
         id: id,
@@ -49,8 +58,11 @@ class RestaurantDetailProvider with ChangeNotifier {
         await fetchDetail(id);
       }
       return ok;
-    } catch (_) {
+    } catch (e) {
       return false;
+    } finally {
+      _submitting = false;
+      notifyListeners();
     }
   }
 }

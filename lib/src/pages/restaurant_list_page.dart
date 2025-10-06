@@ -52,7 +52,62 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
               builder: (context, provider, _) {
                 final result = provider.listResult;
                 if (result is Loading<List<RestaurantSummary>>) {
-                  return const Center(child: CircularProgressIndicator());
+                  // Show skeleton list while loading
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      final mq = MediaQuery.of(context);
+                      final isWide = mq.size.width > 600;
+                      final imageSize = isWide ? 120.0 : 84.0;
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: imageSize,
+                                height: imageSize,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest
+                                    .withAlpha(0x66),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 18,
+                                      width: double.infinity,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surfaceContainerHighest
+                                          .withAlpha(0x66),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      height: 14,
+                                      width: 120,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surfaceContainerHighest
+                                          .withAlpha(0x66),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 } else if (result is Success<List<RestaurantSummary>>) {
                   final restaurants = provider.searchResults.isNotEmpty
                       ? provider.searchResults
@@ -109,8 +164,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                         : Container(
                                             width: imageSize,
                                             height: imageSize,
-                                            color: cs.surfaceVariant
-                                                .withOpacity(0.6),
+                                            color: cs.surfaceContainerHighest
+                                                .withAlpha(0x99),
                                           ),
                                   ),
                                 ),
@@ -133,7 +188,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                               style: textTheme.bodyMedium
                                                   ?.copyWith(
                                                     color: cs.onSurface
-                                                        .withOpacity(0.8),
+                                                        .withAlpha(0xCC),
                                                   ),
                                             ),
                                           ),
