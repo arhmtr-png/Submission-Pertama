@@ -41,6 +41,7 @@ void main() {
     // Fill review form
     await tester.enterText(find.byType(TextField).first, 'Tester');
     await tester.enterText(find.byType(TextField).at(1), 'Great place!');
+    await tester.ensureVisible(find.text('Submit Review'));
     await tester.tap(find.text('Submit Review'));
     await tester.pumpAndSettle(const Duration(seconds: 3));
 

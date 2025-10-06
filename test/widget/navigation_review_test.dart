@@ -50,7 +50,8 @@ void main() {
     await tester.enterText(find.byType(TextField).at(0), 'Alice');
     await tester.enterText(find.byType(TextField).at(1), 'Great!');
 
-    // Tap submit
+    // Tap submit (ensure visible first to avoid hit-test warnings)
+    await tester.ensureVisible(find.text('Submit Review'));
     await tester.tap(find.text('Submit Review'));
     await tester.pumpAndSettle();
 

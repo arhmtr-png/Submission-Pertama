@@ -95,6 +95,7 @@ void main() {
     // Enter review
     await tester.enterText(find.byType(TextField).at(0), 'Tester');
     await tester.enterText(find.byType(TextField).at(1), 'Nice');
+    await tester.ensureVisible(find.text('Submit Review'));
     await tester.tap(find.text('Submit Review'));
     await tester.pumpAndSettle();
 
