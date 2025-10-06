@@ -19,5 +19,14 @@ jobs:
         run: flutter pub get
       - name: Analyze
         run: flutter analyze
-      - name: Run tests
-        run: flutter test --no-pub
+      - name: Run tests (verbose)
+        run: |
+          # Run tests with verbose output and capture logs (PowerShell on windows runners)
+          flutter test --no-pub -v *> flutter_test.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload test log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-test-log
+          path: flutter_test.log
