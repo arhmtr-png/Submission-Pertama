@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+[![Flutter CI](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml/badge.svg)](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
