@@ -119,13 +119,19 @@ gh release create v1.0.0 build\app\outputs\flutter-apk\app-debug.apk --title "fu
 	3. Choose a tag name (for example v1.0.0), give it a title, and drag the `app-debug.apk` file into the "Attach binaries by dropping them here or selecting them" area.
 	4. Publish the release.
 
-3. Add the download link to this README (replace with your release URL):
+3. Add the download link to this README (actual release URL):
 
 ```markdown
-[Download APK (debug)](https://github.com/<owner>/<repo>/releases/download/v1.0.0/app-debug.apk)
+[Download APK (debug)](https://github.com/arhmtr-png/Submission-Pertama/releases/download/v1.0.0/app-debug.apk)
 ```
 
 Keep the APK out of the Git history (don't commit the binary into the repo). Use Releases or external hosting.
+
+## Release notes
+
+**fundamental v1.0.0 (Debug)**
+
+Debug APK for review — contains Restaurant List/Detail, Search, Review features. Tests included and CI passing.
 
 ### Using a TFLite model or remote model URL
 
