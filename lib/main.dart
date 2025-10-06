@@ -41,26 +41,16 @@ class MyApp extends StatelessWidget {
           ),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme)
               .copyWith(
-                headlineLarge: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
-                  ),
+                headlineLarge: ThemeData.light().textTheme.headlineLarge
+                    ?.copyWith(fontSize: 28, fontWeight: FontWeight.w700),
+                headlineMedium: ThemeData.light().textTheme.headlineMedium
+                    ?.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
+                titleLarge: ThemeData.light().textTheme.titleLarge?.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
-                headlineMedium: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                titleLarge: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                bodyMedium: GoogleFonts.roboto(
-                  textStyle: const TextStyle(fontSize: 14),
+                bodyMedium: ThemeData.light().textTheme.bodyMedium?.copyWith(
+                  fontSize: 14,
                 ),
               ),
           fontFamily: platformFontFamily(),
@@ -88,40 +78,34 @@ class MyApp extends StatelessWidget {
                   useMaterial3: true,
                 ).textTheme,
               ).copyWith(
-                headlineLarge: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
-                    color: ThemeData(
-                      brightness: Brightness.dark,
-                    ).colorScheme.onSurface,
-                  ),
+                headlineLarge: ThemeData.dark().textTheme.headlineLarge
+                    ?.copyWith(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: ThemeData(
+                        brightness: Brightness.dark,
+                      ).colorScheme.onSurface,
+                    ),
+                headlineMedium: ThemeData.dark().textTheme.headlineMedium
+                    ?.copyWith(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: ThemeData(
+                        brightness: Brightness.dark,
+                      ).colorScheme.onSurface.withAlpha(0xCC),
+                    ),
+                titleLarge: ThemeData.dark().textTheme.titleLarge?.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: ThemeData(
+                    brightness: Brightness.dark,
+                  ).colorScheme.onSurface.withAlpha(0xCC),
                 ),
-                headlineMedium: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: ThemeData(
-                      brightness: Brightness.dark,
-                    ).colorScheme.onSurface.withAlpha(0xCC),
-                  ),
-                ),
-                titleLarge: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: ThemeData(
-                      brightness: Brightness.dark,
-                    ).colorScheme.onSurface.withAlpha(0xCC),
-                  ),
-                ),
-                bodyMedium: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                    fontSize: 14,
-                    color: ThemeData(
-                      brightness: Brightness.dark,
-                    ).colorScheme.onSurface.withAlpha(0xCC),
-                  ),
+                bodyMedium: ThemeData.dark().textTheme.bodyMedium?.copyWith(
+                  fontSize: 14,
+                  color: ThemeData(
+                    brightness: Brightness.dark,
+                  ).colorScheme.onSurface.withAlpha(0xCC),
                 ),
               ),
           cardTheme: CardThemeData(
@@ -148,8 +132,9 @@ class MyApp extends StatelessWidget {
   // Choose base font family per platform as requested by reviewer
   String platformFontFamily() {
     // Android, Fuchsia, Linux: Roboto
-    if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux)
+    if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux) {
       return 'Roboto';
+    }
     // iOS: SF Pro Display/Text
     if (Platform.isIOS) return 'SF Pro Text';
     // macOS: .AppleSystemUIFont
