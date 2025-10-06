@@ -26,12 +26,10 @@ void main() {
     expect(titleFinder, findsOneWidget);
 
     // Now rebuild with dark theme forced by setting platform brightness - simulate dark mode
-    tester.binding.window.platformDispatcher.platformBrightnessTestValue =
-        Brightness.dark;
+    tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
     addTearDown(
-      () =>
-          tester.binding.window.platformDispatcher.platformBrightnessTestValue =
-              Brightness.light,
+      () => tester.platformDispatcher.platformBrightnessTestValue =
+          Brightness.light,
     );
 
     // Rebuild app
