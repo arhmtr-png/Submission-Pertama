@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import '../models/restaurant_summary.dart';
 import '../services/api_service.dart';
-import '../utils/api_error.dart';
 import '../utils/result.dart';
+import '../utils/error_mapper.dart';
 
 class RestaurantProvider with ChangeNotifier {
   final ApiService apiService;
@@ -36,13 +36,7 @@ class RestaurantProvider with ChangeNotifier {
       final result = await apiService.fetchRestaurantList();
       _listResult = Success(result);
     } catch (e) {
-      if (e is ApiException) {
-        _listResult = ErrorResult('Server error ${e.statusCode}: ${e.message}');
-      } else if (e is Exception) {
-        _listResult = ErrorResult(e.toString());
-      } else {
-        _listResult = const ErrorResult('Unknown error');
-      }
+      _listResult = ErrorResult(friendlyErrorMessage(e));
     }
     notifyListeners();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/restaurant_detail.dart';
 import '../services/api_service.dart';
 import '../utils/result.dart';
+import '../utils/error_mapper.dart';
 
 class RestaurantDetailProvider with ChangeNotifier {
   final ApiService apiService;
@@ -36,11 +37,7 @@ class RestaurantDetailProvider with ChangeNotifier {
       final d = await apiService.fetchRestaurantDetail(id);
       _detailResult = Success(d);
     } catch (e) {
-      if (e is Exception) {
-        _detailResult = ErrorResult(e.toString());
-      } else {
-        _detailResult = const ErrorResult('Unknown error');
-      }
+      _detailResult = ErrorResult(friendlyErrorMessage(e));
     }
     notifyListeners();
   }
