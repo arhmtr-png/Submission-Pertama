@@ -3,6 +3,7 @@
 A new Flutter project.
 
 [![Flutter CI](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml/badge.svg)](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml)
+[![Release v1.0.0](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/arhmtr-png/Submission-Pertama/releases/tag/v1.0.0)
 
 ## Getting Started
 

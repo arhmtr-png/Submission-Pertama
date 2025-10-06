@@ -1,3 +1,23 @@
+# Release: fundamental v1.0.0 (Debug)
+
+Release date: 2025-10-06
+
+## Notes
+
+Debug APK for review — contains Restaurant List/Detail, Search, Review features. Tests included and CI passing.
+
+## Asset
+
+- APK (debug): https://github.com/arhmtr-png/Submission-Pertama/releases/download/v1.0.0/app-debug.apk
+
+## Verification
+
+- File size: 145,198,976 bytes (~145.2 MB)
+- SHA-256: 6D844DA66AA16692E5404FCCE8145618CA91B5E5F157A6EC704DE7789BD157AB
+
+## Notes
+
+Do not commit large binary artifacts into Git history. Use GitHub Releases or external hosting for large build artifacts.
 # Release / APK upload instructions
 
 This file describes two simple ways to publish an APK built from this repository as a GitHub Release asset.
