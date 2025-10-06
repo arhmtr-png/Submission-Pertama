@@ -46,6 +46,50 @@ flutter drive --driver=test_driver/integration_test.dart --target=integration_te
 ```
 Note: Integration tests require a supported device/driver (desktop or mobile) and may not run in headless web environments.
 
+## APK build & Screenshots (Submission)
+
+If you'd like to include an APK for the submission, you can build it locally with the commands below.
+
+Build a release APK:
+
+```bash
+# Ensure dependencies are fetched
+flutter pub get
+
+# Build a release APK
+flutter build apk --release
+
+# Output will be in:
+# build/app/outputs/flutter-apk/app-release.apk
+```
+
+Build a debug APK (faster, for quick testing):
+
+```bash
+flutter build apk --debug
+# Output: build/app/outputs/flutter-apk/app-debug.apk
+```
+
+Install the APK on a connected Android device (Windows PowerShell):
+
+```powershell
+adb install -r build\app\outputs\flutter-apk\app-debug.apk
+```
+
+Screenshots (placeholders)
+
+Below are placeholder screenshot slots — replace these with real PNGs taken from your device/emulator before final submission. Place real images under `assets/screenshots/` and update the file names in the markdown.
+
+![Screenshot - List page](assets/screenshots/list_placeholder.png)
+_Figure 1: Restaurant list (replace with actual screenshot)_
+
+![Screenshot - Detail page](assets/screenshots/detail_placeholder.png)
+_Figure 2: Restaurant detail (replace with actual screenshot)_
+
+Notes:
+- If you prefer not to commit APK binaries to the repository, attach the built APK to your submission platform (or a release) instead and include a download link here.
+- I can generate screenshots locally and add them to the repo if you want — tell me and I'll run the app and capture 2–3 images.
+
 ## Continuous Integration
 
 A GitHub Actions workflow is included at `.github/workflows/flutter.yml` that runs `flutter analyze` and `flutter test` on pushes and pull requests to `main`.
