@@ -283,52 +283,72 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           const SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                final name = _nameController.text.trim();
-                                final review = _reviewController.text.trim();
-                                if (name.isEmpty || review.isEmpty) {
-                                  if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Please enter name and review',
-                                        style: textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                final messenger = ScaffoldMessenger.of(context);
-                                final ok = await provider.submitReview(
-                                  widget.id,
-                                  name,
-                                  review,
+                            child: Consumer<RestaurantDetailProvider>(
+                              builder: (context, p, _) {
+                                final submitting = p.submitting;
+                                return ElevatedButton(
+                                  onPressed: submitting
+                                      ? null
+                                      : () async {
+                                          final name = _nameController.text
+                                              .trim();
+                                          final review = _reviewController.text
+                                              .trim();
+                                          if (name.isEmpty || review.isEmpty) {
+                                            if (!mounted) return;
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Please enter name and review',
+                                                  style: textTheme.bodyMedium,
+                                                ),
+                                              ),
+                                            );
+                                            return;
+                                          }
+                                          final messenger =
+                                              ScaffoldMessenger.of(context);
+                                          final ok = await p.submitReview(
+                                            widget.id,
+                                            name,
+                                            review,
+                                          );
+                                          if (!mounted) return;
+                                          if (ok) {
+                                            _nameController.clear();
+                                            _reviewController.clear();
+                                            messenger.showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Review submitted',
+                                                  style: textTheme.bodyMedium,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            messenger.showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Failed to submit review',
+                                                  style: textTheme.bodyMedium,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                  child: submitting
+                                      ? const SizedBox(
+                                          height: 18,
+                                          width: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Text('Submit Review'),
                                 );
-                                if (!mounted) return;
-                                if (ok) {
-                                  _nameController.clear();
-                                  _reviewController.clear();
-                                  messenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Review submitted',
-                                        style: textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  messenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Failed to submit review',
-                                        style: textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                  );
-                                }
                               },
-                              child: const Text('Submit Review'),
                             ),
                           ),
                         ],
