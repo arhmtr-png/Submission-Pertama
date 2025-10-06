@@ -23,88 +23,121 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Restaurant App',
+        themeMode: ThemeMode.system,
+        // Light theme (Material 3) with a seeded color scheme for dynamic color support
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
           useMaterial3: true,
-          scaffoldBackgroundColor: Colors.grey.shade50,
-          // Use Montserrat for headlines and Roboto for body text
-          textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
-              .copyWith(
-                headlineLarge: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineLarge?.copyWith(fontSize: 28),
-                ),
-                headlineMedium: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineMedium?.copyWith(fontSize: 22),
-                ),
-                headlineSmall: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineSmall?.copyWith(fontSize: 18),
-                ),
-                titleLarge: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontSize: 18),
-                ),
-                titleMedium: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontSize: 16),
-                ),
-                titleSmall: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontSize: 14),
-                ),
-              ),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF2A5BB1), // indigo-like primary
+            brightness: Brightness.light,
+          ),
+          scaffoldBackgroundColor: const Color(0xFFFEFBFF),
           appBarTheme: AppBarTheme(
-            backgroundColor: Colors.teal.shade700,
+            backgroundColor: Color(0xFF2A5BB1),
+            foregroundColor: Colors.white,
             elevation: 2,
             centerTitle: true,
           ),
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
-              .copyWith(
+          textTheme:
+              GoogleFonts.robotoTextTheme(
+                ThemeData(useMaterial3: true).textTheme,
+              ).copyWith(
                 headlineLarge: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineLarge?.copyWith(fontSize: 28),
+                  textStyle: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 headlineMedium: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineMedium?.copyWith(fontSize: 22),
-                ),
-                headlineSmall: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.headlineSmall?.copyWith(fontSize: 18),
+                  textStyle: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 titleLarge: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontSize: 18),
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                titleMedium: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontSize: 16),
-                ),
-                titleSmall: GoogleFonts.montserrat(
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontSize: 14),
+                bodyMedium: GoogleFonts.roboto(
+                  textStyle: const TextStyle(fontSize: 14),
                 ),
               ),
+          cardTheme: CardThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 2,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2A5BB1),
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ),
+        // Dark theme with higher contrast and explicit surface/background roles
+        darkTheme: ThemeData(
+          useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.teal,
+            seedColor: const Color(0xFF2A5BB1),
             brightness: Brightness.dark,
+          ),
+          scaffoldBackgroundColor: const Color(0xFF0B0B0E),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF121216),
+            foregroundColor: Colors.white,
+            elevation: 2,
+            centerTitle: true,
+          ),
+          textTheme:
+              GoogleFonts.robotoTextTheme(
+                ThemeData(
+                  brightness: Brightness.dark,
+                  useMaterial3: true,
+                ).textTheme,
+              ).copyWith(
+                headlineLarge: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                headlineMedium: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white70,
+                  ),
+                ),
+                titleLarge: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white70,
+                  ),
+                ),
+                bodyMedium: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+          cardTheme: CardThemeData(
+            color: const Color(0xFF1A1A1E),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 2,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF245FA6),
+              foregroundColor: Colors.white,
+            ),
           ),
         ),
         home: const RestaurantListPage(),

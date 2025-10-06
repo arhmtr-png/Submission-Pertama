@@ -62,6 +62,12 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     itemCount: restaurants.length,
                     itemBuilder: (context, index) {
                       final item = restaurants[index];
+                      final mq = MediaQuery.of(context);
+                      final isWide = mq.size.width > 600;
+                      final imageSize = isWide ? 120.0 : 84.0;
+                      final cs = Theme.of(context).colorScheme;
+                      final textTheme = Theme.of(context).textTheme;
+
                       return Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -96,14 +102,15 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                     child: item.pictureId.isNotEmpty
                                         ? Image.network(
                                             'https://restaurant-api.dicoding.dev/images/medium/${item.pictureId}',
-                                            width: 84,
-                                            height: 84,
+                                            width: imageSize,
+                                            height: imageSize,
                                             fit: BoxFit.cover,
                                           )
                                         : Container(
-                                            width: 84,
-                                            height: 84,
-                                            color: Colors.grey[200],
+                                            width: imageSize,
+                                            height: imageSize,
+                                            color: cs.surfaceVariant
+                                                .withOpacity(0.6),
                                           ),
                                   ),
                                 ),
@@ -115,19 +122,31 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                     children: [
                                       Text(
                                         item.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge,
+                                        style: textTheme.titleLarge,
                                       ),
                                       const SizedBox(height: 6),
                                       Row(
                                         children: [
-                                          Expanded(child: Text(item.city)),
+                                          Expanded(
+                                            child: Text(
+                                              item.city,
+                                              style: textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                    color: cs.onSurface
+                                                        .withOpacity(0.8),
+                                                  ),
+                                            ),
+                                          ),
                                           const SizedBox(width: 8),
                                           Chip(
                                             backgroundColor:
-                                                Colors.teal.shade50,
-                                            label: Text('⭐ ${item.rating}'),
+                                                cs.primaryContainer,
+                                            label: Text(
+                                              '⭐ ${item.rating}',
+                                              style: TextStyle(
+                                                color: cs.onPrimaryContainer,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),

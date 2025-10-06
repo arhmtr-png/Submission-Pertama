@@ -76,6 +76,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             } else if (result is Success<RestaurantDetail> &&
                 provider.detail != null) {
               final detail = provider.detail!;
+              final cs = Theme.of(context).colorScheme;
+              final textTheme = Theme.of(context).textTheme;
+              final mq = MediaQuery.of(context);
+              final isWide = mq.size.width > 700;
+              final imageHeight = isWide ? 320.0 : 220.0;
+
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -90,30 +96,44 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                               ),
                               child: Image.network(
                                 'https://restaurant-api.dicoding.dev/images/medium/${widget.pictureId}',
-                                height: 220,
+                                height: imageHeight,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) return child;
+                                  return SizedBox(
+                                    height: imageHeight,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                },
                               ),
                             )
-                          : const SizedBox.shrink(),
+                          : SizedBox(
+                              height: imageHeight,
+                              child: Container(color: cs.surfaceVariant),
+                            ),
                     ),
                     const SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        detail.name,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
+                      child: Text(detail.name, style: textTheme.headlineSmall),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(detail.description),
+                      child: Text(
+                        detail.description,
+                        style: textTheme.bodyMedium,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         'Address: ${detail.address} • ${detail.city}',
-                        style: TextStyle(color: Colors.grey[700]),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: cs.onSurface.withOpacity(0.8),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -121,10 +141,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Foods',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      child: Text('Foods', style: textTheme.titleMedium),
                     ),
                     const SizedBox(height: 8),
                     ...detail.foods.map(
@@ -134,16 +151,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           vertical: 6,
                         ),
                         elevation: 1,
-                        child: ListTile(title: Text(f.name)),
+                        child: ListTile(
+                          title: Text(f.name, style: textTheme.bodyMedium),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Drinks',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      child: Text('Drinks', style: textTheme.titleMedium),
                     ),
                     const SizedBox(height: 8),
                     ...detail.drinks.map(
@@ -153,7 +169,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           vertical: 6,
                         ),
                         elevation: 1,
-                        child: ListTile(title: Text(d.name)),
+                        child: ListTile(
+                          title: Text(d.name, style: textTheme.bodyMedium),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -163,7 +181,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         'Customer Reviews',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: textTheme.titleMedium,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -175,9 +193,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         ),
                         elevation: 1,
                         child: ListTile(
-                          title: Text(r.name),
-                          subtitle: Text(r.review),
-                          trailing: Text(r.date),
+                          title: Text(r.name, style: textTheme.bodyMedium),
+                          subtitle: Text(r.review, style: textTheme.bodyMedium),
+                          trailing: Text(r.date, style: textTheme.bodySmall),
                         ),
                       ),
                     ),
@@ -187,10 +205,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const Text(
-                            'Add a Review',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text('Add a Review', style: textTheme.titleLarge),
                           const SizedBox(height: 8),
                           TextField(
                             controller: _nameController,
@@ -216,24 +231,16 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                ),
-                                backgroundColor: Colors.teal.shade700,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
                               onPressed: () async {
                                 final name = _nameController.text.trim();
                                 final review = _reviewController.text.trim();
                                 if (name.isEmpty || review.isEmpty) {
                                   if (!mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Text(
                                         'Please enter name and review',
+                                        style: textTheme.bodyMedium,
                                       ),
                                     ),
                                   );
@@ -250,14 +257,20 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                   _nameController.clear();
                                   _reviewController.clear();
                                   messenger.showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Review submitted'),
+                                    SnackBar(
+                                      content: Text(
+                                        'Review submitted',
+                                        style: textTheme.bodyMedium,
+                                      ),
                                     ),
                                   );
                                 } else {
                                   messenger.showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Failed to submit review'),
+                                    SnackBar(
+                                      content: Text(
+                                        'Failed to submit review',
+                                        style: textTheme.bodyMedium,
+                                      ),
                                     ),
                                   );
                                 }
