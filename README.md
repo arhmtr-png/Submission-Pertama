@@ -80,11 +80,11 @@ Screenshots (placeholders)
 
 Below are placeholder screenshot slots — replace these with real PNGs taken from your device/emulator before final submission. Place real images under `assets/screenshots/` and update the file names in the markdown.
 
-![Screenshot - List page](assets/screenshots/list_placeholder.png)
-_Figure 1: Restaurant list (replace with actual screenshot)_
+![Screenshot - List page](assets/screenshots/list_screenshot.png)
+_Figure 1: Restaurant list_
 
-![Screenshot - Detail page](assets/screenshots/detail_placeholder.png)
-_Figure 2: Restaurant detail (replace with actual screenshot)_
+![Screenshot - Detail page](assets/screenshots/detail_screenshot.png)
+_Figure 2: Restaurant detail_
 
 Notes:
 - If you prefer not to commit APK binaries to the repository, attach the built APK to your submission platform (or a release) instead and include a download link here.
