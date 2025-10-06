@@ -24,8 +24,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Restaurant App',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
           useMaterial3: true,
+          scaffoldBackgroundColor: Colors.grey.shade50,
           // Use Montserrat for headlines and Roboto for body text
           textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
               .copyWith(
@@ -60,7 +61,11 @@ class MyApp extends StatelessWidget {
                   ).textTheme.titleSmall?.copyWith(fontSize: 14),
                 ),
               ),
-          appBarTheme: AppBarTheme(backgroundColor: Colors.cyan.shade700),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.teal.shade700,
+            elevation: 2,
+            centerTitle: true,
+          ),
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
@@ -98,7 +103,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.cyan,
+            seedColor: Colors.teal,
             brightness: Brightness.dark,
           ),
         ),

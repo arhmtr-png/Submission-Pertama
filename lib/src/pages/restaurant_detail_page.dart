@@ -83,12 +83,27 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     Hero(
                       tag: widget.id,
                       child: widget.pictureId.isNotEmpty
-                          ? Image.network(
-                              'https://restaurant-api.dicoding.dev/images/medium/${widget.pictureId}',
-                              height: 200,
-                              fit: BoxFit.cover,
+                          ? ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                              child: Image.network(
+                                'https://restaurant-api.dicoding.dev/images/medium/${widget.pictureId}',
+                                height: 220,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             )
                           : const SizedBox.shrink(),
+                    ),
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        detail.name,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -98,9 +113,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         'Address: ${detail.address} • ${detail.city}',
+                        style: TextStyle(color: Colors.grey[700]),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
+                    const Divider(),
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
@@ -108,15 +126,18 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
+                    const SizedBox(height: 8),
                     ...detail.foods.map(
                       (f) => Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 6,
                         ),
+                        elevation: 1,
                         child: ListTile(title: Text(f.name)),
                       ),
                     ),
+                    const SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
@@ -124,16 +145,20 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
+                    const SizedBox(height: 8),
                     ...detail.drinks.map(
                       (d) => Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 6,
                         ),
+                        elevation: 1,
                         child: ListTile(title: Text(d.name)),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
+                    const Divider(),
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
@@ -141,12 +166,14 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
+                    const SizedBox(height: 8),
                     ...detail.customerReviews.map(
                       (r) => Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 6,
                         ),
+                        elevation: 1,
                         child: ListTile(
                           title: Text(r.name),
                           subtitle: Text(r.review),
@@ -164,58 +191,79 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             'Add a Review',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          const SizedBox(height: 8),
                           TextField(
                             controller: _nameController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Your name',
-                            ),
-                          ),
-                          TextField(
-                            controller: _reviewController,
-                            decoration: const InputDecoration(
-                              labelText: 'Your review',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final name = _nameController.text.trim();
-                              final review = _reviewController.text.trim();
-                              if (name.isEmpty || review.isEmpty) {
-                                if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Please enter name and review',
+                          TextField(
+                            controller: _reviewController,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              labelText: 'Your review',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                backgroundColor: Colors.teal.shade700,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () async {
+                                final name = _nameController.text.trim();
+                                final review = _reviewController.text.trim();
+                                if (name.isEmpty || review.isEmpty) {
+                                  if (!mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Please enter name and review',
+                                      ),
                                     ),
-                                  ),
+                                  );
+                                  return;
+                                }
+                                final messenger = ScaffoldMessenger.of(context);
+                                final ok = await provider.submitReview(
+                                  widget.id,
+                                  name,
+                                  review,
                                 );
-                                return;
-                              }
-                              final messenger = ScaffoldMessenger.of(context);
-                              final ok = await provider.submitReview(
-                                widget.id,
-                                name,
-                                review,
-                              );
-                              if (!mounted) return;
-                              if (ok) {
-                                _nameController.clear();
-                                _reviewController.clear();
-                                messenger.showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Review submitted'),
-                                  ),
-                                );
-                              } else {
-                                messenger.showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Failed to submit review'),
-                                  ),
-                                );
-                              }
-                            },
-                            child: const Text('Submit Review'),
+                                if (!mounted) return;
+                                if (ok) {
+                                  _nameController.clear();
+                                  _reviewController.clear();
+                                  messenger.showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Review submitted'),
+                                    ),
+                                  );
+                                } else {
+                                  messenger.showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Failed to submit review'),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text('Submit Review'),
+                            ),
                           ),
                         ],
                       ),

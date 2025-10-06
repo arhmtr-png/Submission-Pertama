@@ -58,60 +58,86 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       ? provider.searchResults
                       : result.data;
                   return ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     itemCount: restaurants.length,
                     itemBuilder: (context, index) {
                       final item = restaurants[index];
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                        leading: Hero(
-                          tag: item.id,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: item.pictureId.isNotEmpty
-                                ? Image.network(
-                                    'https://restaurant-api.dicoding.dev/images/medium/${item.pictureId}',
-                                    width: 72,
-                                    height: 72,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Container(
-                                    width: 72,
-                                    height: 72,
-                                    color: Colors.grey[200],
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RestaurantDetailPage(
+                                  id: item.id,
+                                  name: item.name,
+                                  pictureId: item.pictureId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Hero(
+                                  tag: item.id,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: item.pictureId.isNotEmpty
+                                        ? Image.network(
+                                            'https://restaurant-api.dicoding.dev/images/medium/${item.pictureId}',
+                                            width: 84,
+                                            height: 84,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Container(
+                                            width: 84,
+                                            height: 84,
+                                            color: Colors.grey[200],
+                                          ),
                                   ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Row(
+                                        children: [
+                                          Expanded(child: Text(item.city)),
+                                          const SizedBox(width: 8),
+                                          Chip(
+                                            backgroundColor:
+                                                Colors.teal.shade50,
+                                            label: Text('⭐ ${item.rating}'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        title: Text(item.name),
-                        subtitle: Row(
-                          children: [
-                            Expanded(child: Text(item.city)),
-                            const SizedBox(width: 8),
-                            Chip(
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 0,
-                              ),
-                              label: Text('⭐ ${item.rating}'),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RestaurantDetailPage(
-                                id: item.id,
-                                name: item.name,
-                                pictureId: item.pictureId,
-                              ),
-                            ),
-                          );
-                        },
                       );
                     },
                   );

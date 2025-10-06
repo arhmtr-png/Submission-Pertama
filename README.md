@@ -38,6 +38,14 @@ flutter test
 Notes:
 - Widget tests use a `FakeApiService` to avoid real network calls and network images.
 
+Integration tests:
+
+```bash
+# Run integration tests (desktop):
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d windows
+```
+Note: Integration tests require a supported device/driver (desktop or mobile) and may not run in headless web environments.
+
 ## Continuous Integration
 
 A GitHub Actions workflow is included at `.github/workflows/flutter.yml` that runs `flutter analyze` and `flutter test` on pushes and pull requests to `main`.
