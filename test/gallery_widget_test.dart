@@ -19,10 +19,8 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-  // After trying to load more, should still have cards and not crash
-  await tester.pumpAndSettle();
-  expect(find.byType(Card), findsWidgets);
+    // After trying to load more, should still have cards and not crash
+    await tester.pumpAndSettle();
+    expect(find.byType(Card), findsWidgets);
   });
 }
-
-

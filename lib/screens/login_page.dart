@@ -24,12 +24,20 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() ?? false) {
       // For demo we treat any non-empty email/password as success
       final timestamp = DateTime.now().toIso8601String();
-      Navigator.pushNamed(context, '/results', arguments: {
-        'email': _emailController.text.trim(),
-        'timestamp': timestamp,
-      });
+      Navigator.pushNamed(
+        context,
+        '/results',
+        arguments: {
+          'email': _emailController.text.trim(),
+          'timestamp': timestamp,
+        },
+      );
     } else {
-      Navigator.pushNamed(context, '/error', arguments: 'Please fill all required fields.');
+      Navigator.pushNamed(
+        context,
+        '/error',
+        arguments: 'Please fill all required fields.',
+      );
     }
   }
 
@@ -37,14 +45,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-      ),
+      appBar: AppBar(title: const Text('Sign In')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: screenWidth < 600 ? screenWidth : 480),
+            constraints: BoxConstraints(
+              maxWidth: screenWidth < 600 ? screenWidth : 480,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -61,12 +69,16 @@ class _LoginPageState extends State<LoginPage> {
                         prefixIcon: Icon(Icons.email),
                         border: OutlineInputBorder(),
                       ),
-                    validator: (v) {
-                      if (v == null || v.trim().isEmpty) return 'Email is required';
-                      if (!v.contains('@')) return 'Enter a valid email';
-                      return null;
-                    },
-                  ),
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) {
+                          return 'Email is required';
+                        }
+                        if (!v.contains('@')) {
+                          return 'Enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Semantics(
@@ -81,16 +93,22 @@ class _LoginPageState extends State<LoginPage> {
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           tooltip: _obscure ? 'Show password' : 'Hide password',
-                          icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                          icon: Icon(
+                            _obscure ? Icons.visibility : Icons.visibility_off,
+                          ),
                           onPressed: () => setState(() => _obscure = !_obscure),
                         ),
                       ),
-                    validator: (v) {
-                      if (v == null || v.isEmpty) return 'Password is required';
-                      if (v.length < 4) return 'Password too short';
-                      return null;
-                    },
-                  ),
+                      validator: (v) {
+                        if (v == null || v.isEmpty) {
+                          return 'Password is required';
+                        }
+                        if (v.length < 4) {
+                          return 'Password too short';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   const SizedBox(height: 20),
                   SizedBox(

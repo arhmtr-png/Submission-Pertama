@@ -19,7 +19,9 @@ class _GalleryPageState extends State<GalleryPage> {
     super.initState();
     _loadMore();
     _controller.addListener(() {
-      if (_controller.position.pixels > _controller.position.maxScrollExtent - 200 && !_loadingMore) {
+      if (_controller.position.pixels >
+              _controller.position.maxScrollExtent - 200 &&
+          !_loadingMore) {
         _loadMore();
       }
     });
@@ -36,11 +38,14 @@ class _GalleryPageState extends State<GalleryPage> {
     // simulate network / loading delay
     await Future.delayed(const Duration(milliseconds: 300));
     final start = _items.length;
-    final newItems = List.generate(8, (i) => {
-          'title': 'Image ${start + i + 1}',
-          'subtitle': 'Description ${start + i + 1}',
-          'url': 'https://picsum.photos/seed/${start + i + 1}/600/400',
-        });
+    final newItems = List.generate(
+      8,
+      (i) => {
+        'title': 'Image ${start + i + 1}',
+        'subtitle': 'Description ${start + i + 1}',
+        'url': 'https://picsum.photos/seed/${start + i + 1}/600/400',
+      },
+    );
     setState(() {
       _items.addAll(newItems);
       _loadingMore = false;
@@ -48,9 +53,10 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   List<Map<String, String>> get _filtered => _items.where((it) {
-        final q = _query.toLowerCase();
-        return it['title']!.toLowerCase().contains(q) || it['subtitle']!.toLowerCase().contains(q);
-      }).toList();
+    final q = _query.toLowerCase();
+    return it['title']!.toLowerCase().contains(q) ||
+        it['subtitle']!.toLowerCase().contains(q);
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +73,14 @@ class _GalleryPageState extends State<GalleryPage> {
               tooltip: 'Search images',
               icon: const Icon(Icons.search),
               onPressed: () async {
-                final result = await showSearch<String?>(context: context, delegate: _SimpleSearchDelegate());
+                final result = await showSearch<String?>(
+                  context: context,
+                  delegate: _SimpleSearchDelegate(),
+                );
                 if (result != null) setState(() => _query = result);
               },
             ),
-          )
+          ),
         ],
       ),
       body: Padding(
@@ -101,14 +110,21 @@ class _GalleryPageState extends State<GalleryPage> {
                             label: it['title'],
                             child: FadeInImage(
                               placeholder: MemoryImage(
-                                const Base64Decoder().convert('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMBAJ+YbZkAAAAASUVORK5CYII='),
+                                const Base64Decoder().convert(
+                                  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMBAJ+YbZkAAAAASUVORK5CYII=',
+                                ),
                               ),
                               image: NetworkImage(it['url']!),
                               fit: BoxFit.cover,
-                              imageErrorBuilder: (context, error, stackTrace) => Container(
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
-                              ),
+                              imageErrorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                      Icons.broken_image,
+                                      size: 48,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                             ),
                           ),
                         ),
@@ -117,19 +133,31 @@ class _GalleryPageState extends State<GalleryPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(it['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                              Text(
+                                it['title']!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const SizedBox(height: 4),
-                              Text(it['subtitle']!, style: const TextStyle(fontSize: 12)),
+                              Text(
+                                it['subtitle']!,
+                                style: const TextStyle(fontSize: 12),
+                              ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   );
                 },
               ),
             ),
-            if (_loadingMore) const Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+            if (_loadingMore)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              ),
           ],
         ),
       ),
@@ -147,16 +175,16 @@ class _SimpleSearchDelegate extends SearchDelegate<String?> {
   List<Widget>? buildActions(BuildContext context) {
     return [
       if (query.isNotEmpty)
-        IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () => query = '',
-        )
+        IconButton(icon: const Icon(Icons.clear), onPressed: () => query = ''),
     ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => close(context, null));
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
   }
 
   @override
@@ -166,9 +194,13 @@ class _SimpleSearchDelegate extends SearchDelegate<String?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final matches = suggestions.where((s) => s.toLowerCase().contains(query.toLowerCase())).toList();
+    final matches = suggestions
+        .where((s) => s.toLowerCase().contains(query.toLowerCase()))
+        .toList();
     return ListView(
-      children: matches.map((m) => ListTile(title: Text(m), onTap: () => close(context, m))).toList(),
+      children: matches
+          .map((m) => ListTile(title: Text(m), onTap: () => close(context, m)))
+          .toList(),
     );
   }
 }
