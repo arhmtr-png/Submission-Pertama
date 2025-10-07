@@ -36,6 +36,21 @@ A simple Flutter mobile app demonstrating stateless and stateful widgets, naviga
    flutter run
    ```
 
+## Assets
+
+This project expects image assets to be stored as binary files (PNG/JPEG) under the `assets/` folder. Two images are referenced in the app:
+
+- `assets/welcome.png` — welcome image shown on the Home screen. If you remove it, the app will show a fallback icon.
+- `assets/placeholder.png` — small local placeholder used while remote images in the Gallery load. This file is included in the repository and is referenced from `lib/screens/gallery_page.dart`.
+
+If you add or replace any asset, run:
+
+```powershell
+flutter pub get
+```
+
+Tip: Don't commit base64-encoded text files for images. Store them as binary PNG/JPEG files to avoid runtime decode issues.
+
 ## Progress
 - Home Screen: Implemented (Stateless)
 - Login Screen: Implemented (Stateful) — validation and navigation to Results or Error implemented.
