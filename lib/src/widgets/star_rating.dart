@@ -9,6 +9,9 @@ class StarRating extends StatelessWidget {
   final int starCount;
   final double size;
   final Color? color;
+  final double spacing;
+  final int backgroundAlpha;
+  final double innerRadiusFactor;
   final MainAxisAlignment alignment;
 
   const StarRating({
@@ -17,6 +20,9 @@ class StarRating extends StatelessWidget {
     this.starCount = 5,
     this.size = 18,
     this.color,
+    this.spacing = 2.0,
+    this.backgroundAlpha = 60,
+    this.innerRadiusFactor = 0.5,
     this.alignment = MainAxisAlignment.start,
   }) : super(key: key);
 
@@ -28,15 +34,27 @@ class StarRating extends StatelessWidget {
     final stars = List<Widget>.generate(starCount, (index) {
       final starIndex = index + 1;
       final fill = (rounded - (starIndex - 1)).clamp(0.0, 1.0);
-      return FractionalStar(fraction: fill, size: size, color: cs);
+      return FractionalStar(
+        fraction: fill,
+        size: size,
+        color: cs,
+        backgroundAlpha: backgroundAlpha,
+        innerRadiusFactor: innerRadiusFactor,
+      );
     });
+    // Insert spacing between stars
+    final spaced = <Widget>[];
+    for (var i = 0; i < stars.length; i++) {
+      spaced.add(stars[i]);
+      if (i != stars.length - 1) spaced.add(SizedBox(width: spacing));
+    }
 
     return Semantics(
       label: 'Rating: ${rating.toStringAsFixed(1)} out of $starCount',
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: alignment,
-        children: stars,
+        children: spaced,
       ),
     );
   }
@@ -46,12 +64,16 @@ class FractionalStar extends StatelessWidget {
   final double fraction; // 0.0 .. 1.0
   final double size;
   final Color color;
+  final int backgroundAlpha;
+  final double innerRadiusFactor;
 
   const FractionalStar({
     Key? key,
     required this.fraction,
     required this.size,
     required this.color,
+    this.backgroundAlpha = 60,
+    this.innerRadiusFactor = 0.5,
   }) : super(key: key);
 
   @override
@@ -60,7 +82,12 @@ class FractionalStar extends StatelessWidget {
       width: size,
       height: size,
       child: CustomPaint(
-        painter: _StarPainter(fraction: fraction, color: color),
+        painter: _StarPainter(
+          fraction: fraction,
+          color: color,
+          backgroundAlpha: backgroundAlpha,
+          innerRadiusFactor: innerRadiusFactor,
+        ),
       ),
     );
   }
@@ -69,15 +96,22 @@ class FractionalStar extends StatelessWidget {
 class _StarPainter extends CustomPainter {
   final double fraction;
   final Color color;
+  final int backgroundAlpha;
+  final double innerRadiusFactor;
 
-  _StarPainter({required this.fraction, required this.color});
+  _StarPainter({
+    required this.fraction,
+    required this.color,
+    this.backgroundAlpha = 60,
+    this.innerRadiusFactor = 0.5,
+  });
 
   Path _starPath(Rect rect) {
     // Simple 5-point star path centered in rect
     final cx = rect.center.dx;
     final cy = rect.center.dy;
     final r = rect.width / 2;
-    final innerR = r * 0.5;
+    final innerR = r * innerRadiusFactor;
     final path = Path();
     for (int i = 0; i < 5; i++) {
       final outerAngle = (i * 72 - 90) * math.pi / 180.0;
@@ -101,7 +135,7 @@ class _StarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
     final star = _starPath(rect);
-    final paintBg = Paint()..color = color.withAlpha(60);
+    final paintBg = Paint()..color = color.withAlpha(backgroundAlpha);
     canvas.drawPath(star, paintBg);
 
     if (fraction > 0) {

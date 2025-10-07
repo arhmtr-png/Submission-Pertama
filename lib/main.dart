@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'src/services/api_service.dart';
 import 'src/providers/restaurant_provider.dart';
 import 'src/pages/restaurant_list_page.dart';
@@ -33,17 +32,5 @@ class MyApp extends StatelessWidget {
   }
 
   // Choose base font family per platform as requested by reviewer
-  String platformFontFamily() {
-    // Android, Fuchsia, Linux: Roboto
-    if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux) {
-      return 'Roboto';
-    }
-    // iOS: SF Pro Display/Text
-    if (Platform.isIOS) return 'SF Pro Text';
-    // macOS: .AppleSystemUIFont
-    if (Platform.isMacOS) return '.AppleSystemUIFont';
-    // Windows: Segoe UI
-    if (Platform.isWindows) return 'Segoe UI';
-    return 'Roboto';
-  }
+  // Font selection is handled by TourismTheme.platformFontFamily()
 }
