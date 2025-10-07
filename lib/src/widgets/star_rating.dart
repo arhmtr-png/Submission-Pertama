@@ -15,7 +15,7 @@ class StarRating extends StatelessWidget {
   final MainAxisAlignment alignment;
 
   const StarRating({
-    Key? key,
+    super.key,
     required this.rating,
     this.starCount = 5,
     this.size = 18,
@@ -24,7 +24,7 @@ class StarRating extends StatelessWidget {
     this.backgroundAlpha = 60,
     this.innerRadiusFactor = 0.5,
     this.alignment = MainAxisAlignment.start,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +68,13 @@ class FractionalStar extends StatelessWidget {
   final double innerRadiusFactor;
 
   const FractionalStar({
-    Key? key,
+    super.key,
     required this.fraction,
     required this.size,
     required this.color,
     this.backgroundAlpha = 60,
     this.innerRadiusFactor = 0.5,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

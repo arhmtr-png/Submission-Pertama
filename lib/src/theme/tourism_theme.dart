@@ -7,11 +7,18 @@ class TourismTheme {
     // Prefer the bundled IBM Plex Sans Condensed font included in assets.
     // If for some reason it's not available, fall back to platform fonts.
     try {
-      if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux)
+      if (Platform.isAndroid || Platform.isFuchsia || Platform.isLinux) {
         return 'IBMPlexSansCondensed';
-      if (Platform.isIOS) return 'IBMPlexSansCondensed';
-      if (Platform.isMacOS) return 'IBMPlexSansCondensed';
-      if (Platform.isWindows) return 'IBMPlexSansCondensed';
+      }
+      if (Platform.isIOS) {
+        return 'IBMPlexSansCondensed';
+      }
+      if (Platform.isMacOS) {
+        return 'IBMPlexSansCondensed';
+      }
+      if (Platform.isWindows) {
+        return 'IBMPlexSansCondensed';
+      }
     } catch (_) {
       // If platform detection fails, default to the bundled font family name.
     }
@@ -24,13 +31,13 @@ class TourismTheme {
         seedColor: seed,
         brightness: Brightness.light,
       ),
+      useMaterial3: true,
     );
     // Apply platform font to the text theme using TextTheme.apply
     final themedText = TourismTextStyles.build(
       base.textTheme,
     ).apply(fontFamily: platformFontFamily());
     return base.copyWith(
-      useMaterial3: true,
       textTheme: themedText,
       appBarTheme: AppBarTheme(
         centerTitle: true,
@@ -46,12 +53,12 @@ class TourismTheme {
         seedColor: seed,
         brightness: Brightness.dark,
       ),
+      useMaterial3: true,
     );
     final themedText = TourismTextStyles.build(
       base.textTheme,
     ).apply(fontFamily: platformFontFamily());
     return base.copyWith(
-      useMaterial3: true,
       textTheme: themedText,
       appBarTheme: AppBarTheme(
         centerTitle: true,
