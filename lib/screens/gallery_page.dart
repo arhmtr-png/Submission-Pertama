@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -108,15 +107,18 @@ class _GalleryPageState extends State<GalleryPage> {
                           child: Semantics(
                             image: true,
                             label: it['title'],
-                            child: FadeInImage(
-                              placeholder: MemoryImage(
-                                const Base64Decoder().convert(
-                                  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMBAJ+YbZkAAAAASUVORK5CYII=',
-                                ),
-                              ),
-                              image: NetworkImage(it['url']!),
+                            child: Image.network(
+                              it['url']!,
                               fit: BoxFit.cover,
-                              imageErrorBuilder: (context, error, stackTrace) =>
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                // Show a small local placeholder while the image loads
+                                return Image.asset(
+                                  'assets/placeholder.png',
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) =>
                                   Container(
                                     color: Colors.grey[300],
                                     child: const Icon(
