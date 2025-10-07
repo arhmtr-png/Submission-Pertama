@@ -87,16 +87,29 @@ flutter:
   #       - asset: assets/fonts/Roboto-Bold.ttf
   #         weight: 700
   #
-  # Register Poppins (example). Please add the actual .ttf files under
-  # assets/fonts/ with the names shown below before building the app.
+  # Register bundled fonts placed in assets/fonts/.
+  # We prefer the project's IBMPlexSansCondensed font (bundled) per reviewer request.
   fonts:
-    - family: Poppins
+    - family: IBMPlexSansCondensed
       fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/IBMPlexSansCondensed-Thin.ttf
+        - asset: assets/fonts/IBMPlexSansCondensed-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/IBMPlexSansCondensed-Light.ttf
+          weight: 300
+        - asset: assets/fonts/IBMPlexSansCondensed-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansCondensed-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/IBMPlexSansCondensed-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansCondensed-Bold.ttf
           weight: 700
+        - asset: assets/fonts/IBMPlexSansCondensed-Italic.ttf
+          style: italic
+        - asset: assets/fonts/IBMPlexSansCondensed-BoldItalic.ttf
+          weight: 700
+          style: italic
   # fonts:
   #   - family: Schyler
   #     fonts:
