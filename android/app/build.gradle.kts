@@ -20,7 +20,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         // Temporarily disable Kotlin incremental compilation to avoid incremental cache corruption issues
-        freeCompilerArgs += listOf("-Xno-optimize", "-Xdisable-phases=ir")
+        // Keep only safe compiler flags. Removing '-Xdisable-phases=ir' which is invalid for the Kotlin
+        // compiler in the configured toolchain and was causing a "no phase named ir" compilation error.
+        freeCompilerArgs += listOf("-Xno-optimize")
     }
 
     defaultConfig {
