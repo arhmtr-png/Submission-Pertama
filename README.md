@@ -247,6 +247,10 @@ Notes
 - If you use Android Studio, configure the JDK via File > Settings > Build, Execution, Deployment > Build Tools > Gradle, or set `org.gradle.java.home` in `android/gradle.properties`.
 - If you'd like me to attempt another build here, tell me which JDK path to use (or install JDK 17) and I'll retry the APK build and push any minor fixes.
 
+Short Kotlin fix applied locally
+--------------------------------
+While debugging a Kotlin compilation failure during local builds, I removed an invalid Kotlin compiler flag from `android/app/build.gradle.kts`: the flag `-Xdisable-phases=ir` is not supported in the Kotlin compiler used by this project and produced a "no phase named ir" error. If you see a similar error, remove the flag from `kotlinOptions.freeCompilerArgs` (or update the Kotlin plugin/toolchain) and run a clean build.
+
 ## Notes
 
 This project aims to meet the Dicoding Fundamental Flutter Part 1 primary criteria.
