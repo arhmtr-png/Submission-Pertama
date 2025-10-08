@@ -37,12 +37,17 @@ dependencies:
   http: ^0.13.6
   provider: ^6.0.5
   google_fonts: ^4.0.4
+  sqflite: ^2.2.8
+  path: ^1.8.4
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
+  mockito: ^5.4.0
+  build_runner: ^2.6.11
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
