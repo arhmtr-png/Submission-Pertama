@@ -9,7 +9,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final settings = Provider.of<SettingsProvider>(context);
+    // Use context.watch/read for clearer intent and local variables for values.
+    final isDark = context.watch<SettingsProvider>().isDark;
+    final dailyReminderActive = context.watch<SettingsProvider>().dailyReminderActive;
 
     return Scaffold(
       appBar: AppBar(
@@ -19,27 +21,39 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           SwitchListTile(
-            value: settings.isDark,
+            value: isDark,
             title: const Text('Dark Theme'),
             onChanged: (v) async {
               final messenger = ScaffoldMessenger.of(context);
-              await settings.setDarkTheme(v);
-              messenger.showSnackBar(
-                SnackBar(content: Text('Theme set to ${v ? 'Dark' : 'Light'}')),
-              );
+              try {
+                await context.read<SettingsProvider>().setDarkTheme(v);
+                messenger.showSnackBar(
+                  SnackBar(content: Text('Theme set to ${v ? 'Dark' : 'Light'}')),
+                );
+              } catch (e) {
+                messenger.showSnackBar(
+                  SnackBar(content: Text('Failed to set theme: $e')),
+                );
+              }
             },
           ),
           const Divider(),
           SwitchListTile(
-            value: settings.dailyReminderActive,
+            value: dailyReminderActive,
             title: const Text('Daily Reminder (11:00 AM)'),
             subtitle: const Text('Receive a daily recommended restaurant at 11:00 AM'),
             onChanged: (v) async {
               final messenger = ScaffoldMessenger.of(context);
-              await settings.setDailyReminderActive(v);
-              messenger.showSnackBar(
-                SnackBar(content: Text('Daily reminder ${v ? 'enabled' : 'disabled'}')),
-              );
+              try {
+                await context.read<SettingsProvider>().setDailyReminderActive(v);
+                messenger.showSnackBar(
+                  SnackBar(content: Text('Daily reminder ${v ? 'enabled' : 'disabled'}')),
+                );
+              } catch (e) {
+                messenger.showSnackBar(
+                  SnackBar(content: Text('Failed to update reminder: $e')),
+                );
+              }
             },
           ),
         ],

@@ -11,14 +11,16 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
         // Enable core library desugaring for Java 8+ library features required by some plugins
         isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        // Temporarily disable Kotlin incremental compilation to avoid incremental cache corruption issues
+        freeCompilerArgs += listOf("-Xno-optimize", "-Xdisable-phases=ir")
     }
 
     defaultConfig {

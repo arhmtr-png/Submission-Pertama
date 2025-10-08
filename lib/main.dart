@@ -25,6 +25,7 @@ void main() async {
   // Initialize Workmanager with our callback dispatcher
   Workmanager().initialize(
     BackgroundService.callbackDispatcher,
+    // ignore: deprecated_member_use
     isInDebugMode: false,
   );
   runApp(const MyApp());
