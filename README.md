@@ -200,6 +200,53 @@ If you need any adjustments or want me to add integration tests or CI deployment
 - `lib/src/pages/restaurant_detail_page.dart` (detail UI + review form)
 - `lib/src/widgets/error_retry.dart` (error + retry UI)
 
+## Troubleshooting: Gradle / Kotlin / JDK build issues (observed)
+
+During a local attempt to build the Android APK a Gradle/Kotlin compilation failure was observed. Below are
+the symptoms and recommended remediation steps to get a clean build on Windows.
+
+Symptoms observed
+- `flutter build apk --debug` failed during Gradle/Kotlin compile with errors like `Could not read workspace metadata` and `:app:compileDebugKotlin FAILED`.
+- The analyzer and unit/widget tests still pass locally (`flutter analyze` / `flutter test`).
+
+Recommended steps (PowerShell)
+
+1) Stop Gradle/Java daemons and clear the Gradle caches to remove corrupted metadata files:
+
+```powershell
+Get-Process -Name java -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue;
+if (Test-Path "$env:USERPROFILE\.gradle\caches") {
+	Remove-Item "$env:USERPROFILE\.gradle\caches" -Recurse -Force
+}
+```
+
+2) Ensure a supported JDK is used by Gradle. Android Gradle Plugin and Kotlin are most compatible with JDK 17.
+   Check your Java version:
+
+```powershell
+java -version
+```
+
+If the version is not JDK 17, install JDK 17 and set `JAVA_HOME` (example):
+
+```powershell
+# Replace the path with your JDK 17 installation
+setx JAVA_HOME "C:\Program Files\Java\jdk-17" ; $env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
+```
+
+3) Clean and rebuild the project:
+
+```powershell
+flutter clean
+flutter pub get
+flutter build apk --debug
+```
+
+Notes
+- Deleting the Gradle cache will re-download dependencies and can take some time on the next build.
+- If you use Android Studio, configure the JDK via File > Settings > Build, Execution, Deployment > Build Tools > Gradle, or set `org.gradle.java.home` in `android/gradle.properties`.
+- If you'd like me to attempt another build here, tell me which JDK path to use (or install JDK 17) and I'll retry the APK build and push any minor fixes.
+
 ## Notes
 
 This project aims to meet the Dicoding Fundamental Flutter Part 1 primary criteria.
