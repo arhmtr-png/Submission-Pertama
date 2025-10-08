@@ -19,8 +19,8 @@ void main() {
     provider = RestaurantListProvider(repository: mockRepo);
   });
 
-  test('Initial state is Loading', () {
-    expect(provider.state, equals(ResultState.Loading));
+  test('Initial state is loading', () {
+    expect(provider.state, equals(ResultState.loading));
     expect(provider.restaurants, isEmpty);
     expect(provider.message, isEmpty);
   });
@@ -31,7 +31,7 @@ void main() {
 
     await provider.fetchRestaurants();
 
-    expect(provider.state, equals(ResultState.HasData));
+  expect(provider.state, equals(ResultState.hasData));
     expect(provider.restaurants, hasLength(1));
     expect(provider.restaurants.first, equals(r));
     expect(provider.message, isEmpty);
@@ -42,7 +42,7 @@ void main() {
 
     await provider.fetchRestaurants();
 
-    expect(provider.state, equals(ResultState.Error));
+  expect(provider.state, equals(ResultState.error));
     expect(provider.restaurants, isEmpty);
     expect(provider.message, contains('Check internet'));
   });

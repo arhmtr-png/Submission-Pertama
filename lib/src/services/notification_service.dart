@@ -1,12 +1,26 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+typedef NotificationSelectCallback = void Function(String? payload);
+
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
 
-  static Future<void> init() async {
+  static Future<void> init({NotificationSelectCallback? onSelect}) async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings();
-    await _plugin.initialize(const InitializationSettings(android: android, iOS: ios));
+    await _plugin.initialize(
+      const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        try {
+          final payload = response.payload;
+          if (onSelect != null) {
+            onSelect(payload);
+          }
+        } catch (_) {
+          // ignore
+        }
+      },
+    );
   }
 
   static Future<void> showDailyReminder({required int id, required String title, required String body, String? payload}) async {
