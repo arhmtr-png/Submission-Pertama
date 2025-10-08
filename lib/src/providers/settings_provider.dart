@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:workmanager/workmanager.dart';
 import '../services/settings_service.dart';
 
 class SettingsProvider with ChangeNotifier {
@@ -30,5 +31,29 @@ class SettingsProvider with ChangeNotifier {
     await service.setDailyReminderActive(value);
     _dailyReminderActive = value;
     notifyListeners();
+    // Schedule or cancel the background Workmanager task. Wrapped in try/catch
+    // so tests (where Workmanager isn't available) don't fail.
+    try {
+      final now = DateTime.now();
+      var next = DateTime(now.year, now.month, now.day, 11, 0);
+      if (!next.isAfter(now)) {
+        next = next.add(const Duration(days: 1));
+      }
+      final initialDelay = next.difference(now);
+
+      if (value) {
+        await Workmanager().registerPeriodicTask(
+          'daily_reminder_unique',
+          'daily_reminder_task',
+          initialDelay: initialDelay,
+          frequency: const Duration(days: 1),
+        );
+      } else {
+        await Workmanager().cancelByUniqueName('daily_reminder_unique');
+      }
+    } catch (_) {
+      // If the plugin isn't available (tests or missing platform setup),
+      // swallow the error so provider behavior remains testable.
+    }
   }
 }

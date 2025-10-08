@@ -23,6 +23,15 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  http: ^0.13.6
+  provider: ^6.0.5
+  google_fonts: ^4.0.4
+  sqflite: ^2.2.8
+  path: ^1.8.4
+  shared_preferences: ^2.1.1
+  workmanager: ^0.5.0
+  flutter_local_notifications: ^13.0.0
+  # (dependencies above are the required packages; duplicates were removed)
 
 dev_dependencies:
   flutter_test:
