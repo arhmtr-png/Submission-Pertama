@@ -3,23 +3,32 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+typedef NotificationSelectCallback = void Function(String? payload);
+
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
 
-  static Future<void> init() async {
+  static Future<void> init({NotificationSelectCallback? onSelect}) async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const ios = DarwinInitializationSettings();
     await _plugin.initialize(
       const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        try {
+          final payload = response.payload;
+          if (onSelect != null) onSelect(payload);
+        } catch (_) {
+          // ignore
+        }
+      },
     );
+
     // On Android 13+ we need to request the POST_NOTIFICATIONS permission.
     try {
       if (!kIsWeb && Platform.isAndroid) {
-        // The plugin exposes a method to request permissions on Android.
         await _plugin
             .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin
-            >()
+                AndroidFlutterLocalNotificationsPlugin>()
             ?.requestPermission();
       }
     } catch (_) {

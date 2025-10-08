@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:workmanager/workmanager.dart';
 import '../services/settings_service.dart';
 
+const _dailyTaskName = 'daily_reminder_task_unique';
+
 class SettingsProvider with ChangeNotifier {
   final SettingsService service;
 
@@ -30,6 +32,24 @@ class SettingsProvider with ChangeNotifier {
   Future<void> setDailyReminderActive(bool value) async {
     await service.setDailyReminderActive(value);
     _dailyReminderActive = value;
+    if (value) {
+      // Register periodic task. Workmanager's minimum repeat interval may vary by platform.
+      final now = DateTime.now();
+      DateTime next = DateTime(now.year, now.month, now.day, 11);
+      if (now.isAfter(next) || now.isAtSameMomentAs(next)) {
+        next = next.add(const Duration(days: 1));
+      }
+      final initialDelay = next.difference(now);
+      await Workmanager().registerPeriodicTask(
+        _dailyTaskName,
+        'daily_reminder_task',
+        frequency: const Duration(days: 1),
+        initialDelay: initialDelay,
+        constraints: Constraints(networkType: NetworkType.connected),
+      );
+    } else {
+      await Workmanager().cancelByUniqueName(_dailyTaskName);
+    }
     notifyListeners();
     // Schedule or cancel the background Workmanager task. Wrapped in try/catch
     // so tests (where Workmanager isn't available) don't fail.

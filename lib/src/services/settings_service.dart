@@ -1,8 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService {
-  // Keep the stored keys unchanged (string values) but expose style-correct
-  // constant identifiers to satisfy analyzer.
+  // Keep keys stable for persisted data.
   static const keyDarkTheme = 'KEY_DARK_THEME';
   static const keyDailyReminderActive = 'KEY_DAILY_REMINDER_ACTIVE';
 
@@ -24,5 +23,54 @@ class SettingsService {
   Future<void> setDailyReminderActive(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(keyDailyReminderActive, value);
+  }
+}
+import 'package:shared_preferences/shared_preferences.dart';
+
+class SettingsService {
+<<<<<<< HEAD
+  // Keep the stored keys unchanged (string values) but expose style-correct
+  // constant identifiers to satisfy analyzer.
+  static const keyDarkTheme = 'KEY_DARK_THEME';
+  static const keyDailyReminderActive = 'KEY_DAILY_REMINDER_ACTIVE';
+
+  Future<bool> isDarkTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(keyDarkTheme) ?? false;
+=======
+  static const keyDarkTheme = 'keyDarkTheme';
+  static const keyDailyReminderActive = 'keyDailyReminderActive';
+
+  Future<bool> isDarkTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(keyDarkTheme) ?? false;
+>>>>>>> b44b836 (fix(warnings)/feat(workmanager): Fix all Dart warnings, implement final Workmanager scheduling logic, and deep link handler.)
+  }
+
+  Future<void> setDarkTheme(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+<<<<<<< HEAD
+    await prefs.setBool(keyDarkTheme, value);
+=======
+  await prefs.setBool(keyDarkTheme, value);
+>>>>>>> b44b836 (fix(warnings)/feat(workmanager): Fix all Dart warnings, implement final Workmanager scheduling logic, and deep link handler.)
+  }
+
+  Future<bool> isDailyReminderActive() async {
+    final prefs = await SharedPreferences.getInstance();
+<<<<<<< HEAD
+    return prefs.getBool(keyDailyReminderActive) ?? false;
+=======
+  return prefs.getBool(keyDailyReminderActive) ?? false;
+>>>>>>> b44b836 (fix(warnings)/feat(workmanager): Fix all Dart warnings, implement final Workmanager scheduling logic, and deep link handler.)
+  }
+
+  Future<void> setDailyReminderActive(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+<<<<<<< HEAD
+    await prefs.setBool(keyDailyReminderActive, value);
+=======
+  await prefs.setBool(keyDailyReminderActive, value);
+>>>>>>> b44b836 (fix(warnings)/feat(workmanager): Fix all Dart warnings, implement final Workmanager scheduling logic, and deep link handler.)
   }
 }
