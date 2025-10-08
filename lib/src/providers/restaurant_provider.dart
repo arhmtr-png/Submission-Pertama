@@ -43,8 +43,8 @@ class RestaurantProvider with ChangeNotifier {
 
   Future<void> searchRestaurants(String query) async {
     if (query.isEmpty) {
-      _searchResults = [];
-      notifyListeners();
+      // If query is empty, restore the full list by re-fetching.
+      await fetchRestaurants();
       return;
     }
     _listResult = const Loading();

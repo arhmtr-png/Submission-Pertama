@@ -37,8 +37,8 @@ class RestaurantDetail {
   final List<CustomerReview> customerReviews;
 
   RestaurantDetail({
-    required this.id,
-    required this.name,
+  required this.id,
+  required this.name,
     required this.description,
     required this.city,
     required this.address,
@@ -67,8 +67,8 @@ class RestaurantDetail {
         [];
 
     return RestaurantDetail(
-      id: json['id'] as String,
-      name: json['name'] as String,
+  id: json['id'] as String,
+  name: json['name'] as String,
       description: json['description'] as String,
       city: json['city'] as String,
       address: json['address'] as String,

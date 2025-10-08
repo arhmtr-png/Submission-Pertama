@@ -4,9 +4,12 @@ import 'src/services/api_service.dart';
 import 'src/providers/restaurant_provider.dart';
 import 'src/pages/restaurant_list_page.dart';
 import 'src/pages/restaurant_detail_page.dart';
+import 'src/pages/settings_page.dart';
 import 'src/theme/tourism_theme.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/background_service.dart';
+import 'src/providers/settings_provider.dart';
+import 'src/services/settings_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => RestaurantProvider(apiService: ApiService()),
         ),
+        ChangeNotifierProvider(
+          create: (_) => SettingsProvider(service: SettingsService()),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -51,11 +57,12 @@ class MyApp extends StatelessWidget {
           if (settings.name == '/detail' && settings.arguments is Map) {
             final args = settings.arguments as Map;
             final id = args['id'] as String?;
-            final name = args['name'] as String? ?? '';
-            final pictureId = args['pictureId'] as String? ?? '';
             if (id != null) {
-              return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id, name: name, pictureId: pictureId));
+              return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id));
             }
+          }
+          if (settings.name == SettingsPage.routeName) {
+            return MaterialPageRoute(builder: (_) => const SettingsPage());
           }
           return null;
         },

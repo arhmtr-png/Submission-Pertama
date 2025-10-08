@@ -44,6 +44,12 @@ class TourismTheme {
         backgroundColor: seed,
         foregroundColor: base.colorScheme.onPrimary,
       ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: base.colorScheme.surface,
+        contentTextStyle: themedText.bodyMedium?.copyWith(
+          color: base.colorScheme.onSurface,
+        ),
+      ),
     );
   }
 
@@ -64,6 +70,12 @@ class TourismTheme {
         centerTitle: true,
         backgroundColor: const Color(0xFF121216),
         foregroundColor: base.colorScheme.onPrimary,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: base.colorScheme.surface,
+        contentTextStyle: themedText.bodyMedium?.copyWith(
+          color: base.colorScheme.onSurface,
+        ),
       ),
     );
   }

@@ -10,15 +10,11 @@ import '../widgets/star_rating.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final String id;
-  final String name;
-  final String pictureId;
   final ApiService? apiService;
 
   const RestaurantDetailPage({
     super.key,
     required this.id,
-    required this.name,
-    required this.pictureId,
     this.apiService,
   });
 
@@ -63,7 +59,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
     return ChangeNotifierProvider<RestaurantDetailProvider>.value(
       value: _provider,
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.name)),
+        appBar: AppBar(
+          title: Consumer<RestaurantDetailProvider>(
+            builder: (context, provider, _) => Text(provider.detail?.name ?? 'Detail'),
+          ),
+        ),
         body: Consumer<RestaurantDetailProvider>(
           builder: (context, provider, _) {
             final result = provider.detailResult;
@@ -121,8 +121,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                 ),
               );
             } else if (result is ErrorResult<RestaurantDetail>) {
+              final msg = result.message.isNotEmpty
+                  ? result.message
+                  : 'Failed to load restaurant detail.';
               return ErrorRetry(
-                message: 'Failed to load detail. ${result.message}',
+                message: msg,
                 onRetry: () => provider.fetchDetail(widget.id),
               );
             } else if (result is Success<RestaurantDetail> &&
@@ -139,35 +142,14 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Hero(
-                      tag: widget.id,
-                      child: widget.pictureId.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                              ),
-                              child: Image.network(
-                                'https://restaurant-api.dicoding.dev/images/medium/${widget.pictureId}',
-                                height: imageHeight,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child, progress) {
-                                  if (progress == null) return child;
-                                  return SizedBox(
-                                    height: imageHeight,
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          : SizedBox(
-                              height: imageHeight,
-                              child: Container(
-                                color: cs.surfaceContainerHighest,
-                              ),
-                            ),
+                      tag: 'restaurant-image-${widget.id}',
+                      child: SizedBox(
+                        height: imageHeight,
+                        width: double.infinity,
+                        child: Container(
+                          color: cs.surfaceContainerHighest,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Padding(

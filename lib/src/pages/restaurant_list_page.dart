@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/restaurant_provider.dart';
 import '../models/restaurant_summary.dart';
-import 'restaurant_detail_page.dart';
+// ...existing imports
 import '../widgets/error_retry.dart';
 import '../utils/result.dart';
 import '../widgets/star_rating.dart';
@@ -29,7 +29,16 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Restaurants')),
+      appBar: AppBar(
+        title: const Text('Restaurants'),
+        actions: [
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
@@ -40,11 +49,20 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                if (value.trim().isEmpty) {
+                  // Restore full list when input cleared
+                  Provider.of<RestaurantProvider>(context, listen: false)
+                      .searchRestaurants('');
+                }
+              },
               onSubmitted: (value) {
                 Provider.of<RestaurantProvider>(
                   context,
                   listen: false,
                 ).searchRestaurants(value.trim());
+                // Dismiss keyboard
+                FocusScope.of(context).unfocus();
               },
             ),
           ),
@@ -136,15 +154,10 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushNamed(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => RestaurantDetailPage(
-                                  id: item.id,
-                                  name: item.name,
-                                  pictureId: item.pictureId,
-                                ),
-                              ),
+                              '/detail',
+                              arguments: {'id': item.id},
                             );
                           },
                           child: Padding(
@@ -152,7 +165,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                             child: Row(
                               children: [
                                 Hero(
-                                  tag: item.id,
+                                  tag: 'restaurant-image-${item.id}',
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: item.pictureId.isNotEmpty
@@ -229,8 +242,11 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     },
                   );
                 } else if (result is ErrorResult<List<RestaurantSummary>>) {
+                  final msg = result.message.isNotEmpty
+                      ? result.message
+                      : 'Failed to load restaurants.';
                   return ErrorRetry(
-                    message: 'Failed to load data. ${result.message}',
+                    message: msg,
                     onRetry: () => provider.fetchRestaurants(),
                   );
                 }

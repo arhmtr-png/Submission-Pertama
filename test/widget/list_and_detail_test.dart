@@ -35,7 +35,19 @@ void main() {
     await tester.pumpWidget(
       ChangeNotifierProvider<RestaurantProvider>(
         create: (_) => RestaurantProvider(apiService: fake),
-        child: const MaterialApp(home: RestaurantListPage()),
+        child: MaterialApp(
+          home: const RestaurantListPage(),
+          onGenerateRoute: (settings) {
+            if (settings.name == '/detail' && settings.arguments is Map) {
+              final args = settings.arguments as Map;
+              final id = args['id'] as String?;
+              if (id != null) {
+                return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id, apiService: fake));
+              }
+            }
+            return null;
+          },
+        ),
       ),
     );
 
@@ -78,8 +90,6 @@ void main() {
                 onGenerateRoute: (_) => MaterialPageRoute(
                   builder: (_) => RestaurantDetailPage(
                     id: detail.id,
-                    name: detail.name,
-                    pictureId: '',
                     apiService: fake,
                   ),
                 ),

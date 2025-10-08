@@ -34,8 +34,6 @@ void main() {
       MaterialApp(
         home: RestaurantDetailPage(
           id: 'r1',
-          name: 'Test Resto',
-          pictureId: '',
           apiService: fake,
         ),
       ),
