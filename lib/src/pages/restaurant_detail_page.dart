@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
+import '../models/restaurant_model.dart';
 import '../services/api_service.dart';
 import '../providers/restaurant_detail_provider.dart';
 import '../providers/restaurant_provider.dart';
@@ -63,6 +65,51 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           title: Consumer<RestaurantDetailProvider>(
             builder: (context, provider, _) => Text(provider.detail?.name ?? 'Detail'),
           ),
+          actions: [
+            // Use a Builder to safely attempt to obtain FavoriteProvider.
+            // Tests may not provide FavoriteProvider, so gracefully fall back.
+            Builder(
+              builder: (context) {
+                final detailProv = Provider.of<RestaurantDetailProvider>(context, listen: false);
+                final id = detailProv.detail?.id;
+                if (id == null) return const SizedBox.shrink();
+
+                FavoriteProvider? favProv;
+                try {
+                  favProv = Provider.of<FavoriteProvider>(context, listen: false);
+                } catch (_) {
+                  favProv = null;
+                }
+
+                if (favProv == null) {
+                  // No FavoriteProvider available (e.g. in widget tests). Show a disabled icon.
+                  return IconButton(
+                    icon: const Icon(Icons.favorite_border),
+                    onPressed: null,
+                  );
+                }
+
+                return FutureBuilder<bool>(
+                  future: favProv.isFavorite(id),
+                  builder: (context, snap) {
+                    final isFav = snap.data ?? false;
+                    return IconButton(
+                      icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
+                      onPressed: () async {
+                        if (isFav) {
+                          await favProv!.removeFavorite(id);
+                        } else {
+                          final d = detailProv.detail!;
+                          final r = Restaurant(id: d.id, name: d.name, pictureId: '', city: d.city, rating: d.rating);
+                          await favProv!.addFavorite(r);
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: Consumer<RestaurantDetailProvider>(
           builder: (context, provider, _) {

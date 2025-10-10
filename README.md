@@ -200,6 +200,14 @@ If you need any adjustments or want me to add integration tests or CI deployment
 - `lib/src/pages/restaurant_detail_page.dart` (detail UI + review form)
 - `lib/src/widgets/error_retry.dart` (error + retry UI)
 
+## Notes on repository, favorites and reminders
+
+- LocalRestaurantRepository (`lib/src/repositories/local_restaurant_repository.dart`) is the concrete implementation used by the app. It delegates network calls to `ApiService` and favorites persistence to `DatabaseHelper` (SQLite). The repository is injected via Provider in `main.dart` and consumed by `FavoriteProvider`.
+
+- Theme persistence is handled by `SettingsService` using `SharedPreferences` and exposed via `SettingsProvider`. Toggle the theme in the Settings page and it will persist across app restarts.
+
+- Daily reminders use `workmanager` to schedule a periodic task and `flutter_local_notifications` to display the notification. The task uses a simple fetch from the Dicoding Restaurant API and shows a daily suggestion notification. Enable/disable the reminder in the Settings page; the provider registers/cancels the Workmanager task accordingly.
+
 ## Troubleshooting: Gradle / Kotlin / JDK build issues (observed)
 
 During a local attempt to build the Android APK a Gradle/Kotlin compilation failure was observed. Below are

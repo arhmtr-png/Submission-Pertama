@@ -27,8 +27,10 @@ class SettingsPage extends StatelessWidget {
             title: const Text('Dark Theme'),
             onChanged: (v) async {
               final messenger = ScaffoldMessenger.of(context);
+              final provider = context.read<SettingsProvider>();
               try {
-                await context.read<SettingsProvider>().setDarkTheme(v);
+                // call provider method and await without using context after await
+                await provider.setDarkTheme(v);
                 messenger.showSnackBar(
                   SnackBar(content: Text('Theme set to ${v ? 'Dark' : 'Light'}')),
                 );
@@ -46,8 +48,9 @@ class SettingsPage extends StatelessWidget {
             subtitle: const Text('Receive a daily recommended restaurant at 11:00 AM'),
             onChanged: (v) async {
               final messenger = ScaffoldMessenger.of(context);
+              final provider = context.read<SettingsProvider>();
               try {
-                await context.read<SettingsProvider>().setDailyReminderActive(v);
+                await provider.setDailyReminderActive(v);
                 messenger.showSnackBar(
                   SnackBar(content: Text('Daily reminder ${v ? 'enabled' : 'disabled'}')),
                 );
@@ -67,10 +70,12 @@ class SettingsPage extends StatelessWidget {
                 label: const Text('Send Test Notification'),
                 onPressed: () async {
                   try {
+                    final messenger = ScaffoldMessenger.of(context);
                     await NotificationService.showTestNotification();
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Test notification sent')));
+                    messenger.showSnackBar(const SnackBar(content: Text('Test notification sent')));
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to send test notification: $e')));
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.showSnackBar(SnackBar(content: Text('Failed to send test notification: $e')));
                   }
                 },
               ),

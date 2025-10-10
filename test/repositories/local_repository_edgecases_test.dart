@@ -37,18 +37,22 @@ class FakeApiServiceError implements ApiService {
 
 /// Fake DB helper that implements the favorites methods used by the repository.
 class FakeDbThrows implements FavoritesDataSource {
+  @override
   Future<bool> insertFavorite(Restaurant restaurant) async {
     throw Exception('DB write failed');
   }
 
+  @override
   Future<bool> removeFavorite(String id) async {
     throw Exception('DB delete failed');
   }
 
+  @override
   Future<bool> isFavorite(String id) async {
     return false;
   }
 
+  @override
   Future<List<Restaurant>> getFavorites() async => <Restaurant>[];
 }
 

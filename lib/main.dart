@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'src/services/api_service.dart';
 import 'src/providers/restaurant_provider.dart';
+import 'src/repositories/local_restaurant_repository.dart';
+import 'src/providers/favorite_provider.dart';
 import 'src/pages/restaurant_list_page.dart';
 import 'src/pages/restaurant_detail_page.dart';
+import 'src/pages/favorites_page.dart';
 import 'src/pages/settings_page.dart';
 import 'src/theme/tourism_theme.dart';
 import 'src/services/notification_service.dart';
@@ -39,11 +42,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => RestaurantProvider(apiService: ApiService()),
+        // Single repository instance shared across providers
+        Provider<LocalRestaurantRepository>(
+          create: (_) => LocalRestaurantRepository(),
+          lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => SettingsProvider(service: SettingsService()),
+          create: (ctx) => RestaurantProvider(apiService: ApiService()),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => SettingsProvider(service: SettingsService()),
+        ),
+        ChangeNotifierProvider<FavoriteProvider>(
+          create: (ctx) => FavoriteProvider(repository: ctx.read<LocalRestaurantRepository>()),
         ),
       ],
       child: MaterialApp(
@@ -61,6 +72,9 @@ class MyApp extends StatelessWidget {
             if (id != null) {
               return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id));
             }
+          }
+          if (settings.name == FavoritesPage.routeName) {
+            return MaterialPageRoute(builder: (_) => const FavoritesPage());
           }
           if (settings.name == SettingsPage.routeName) {
             return MaterialPageRoute(builder: (_) => const SettingsPage());

@@ -33,6 +33,11 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
         title: const Text('Restaurants'),
         actions: [
           IconButton(
+            tooltip: 'Favorites',
+            icon: const Icon(Icons.favorite),
+            onPressed: () => Navigator.pushNamed(context, '/favorites'),
+          ),
+          IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings),
             onPressed: () => Navigator.pushNamed(context, '/settings'),

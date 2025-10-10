@@ -21,6 +21,9 @@ class NotificationService {
         }
       },
     );
+    // Note: requesting runtime POST_NOTIFICATIONS permission is handled by
+    // the app/OS or via a permission helper. Avoid calling plugin-specific
+    // APIs here to keep unit tests platform-independent.
   }
 
   static Future<void> showDailyReminder({required int id, required String title, required String body, String? payload}) async {
