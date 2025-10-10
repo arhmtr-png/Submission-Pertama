@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
+import '../services/notification_service.dart';
 import '../providers/settings_provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -56,6 +58,23 @@ class SettingsPage extends StatelessWidget {
               }
             },
           ),
+          // Debug-only: test notification button
+          if (kDebugMode)
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.notifications),
+                label: const Text('Send Test Notification'),
+                onPressed: () async {
+                  try {
+                    await NotificationService.showTestNotification();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Test notification sent')));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to send test notification: $e')));
+                  }
+                },
+              ),
+            ),
         ],
       ),
     );

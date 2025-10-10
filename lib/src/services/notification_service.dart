@@ -28,4 +28,11 @@ class NotificationService {
     const iosDetails = DarwinNotificationDetails();
     await _plugin.show(id, title, body, const NotificationDetails(android: androidDetails, iOS: iosDetails), payload: payload);
   }
+
+  /// Debug helper: show a test notification immediately. Useful during development
+  /// to verify that notifications are working on a device/emulator without waiting
+  /// for scheduled Workmanager tasks.
+  static Future<void> showTestNotification() async {
+    await showDailyReminder(id: 9999, title: 'Test Notification', body: 'This is a test notification from the app.', payload: 'test');
+  }
 }
