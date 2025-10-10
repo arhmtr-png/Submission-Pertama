@@ -44,11 +44,11 @@ Write-Output "Creating release via GitHub API..."
 $response = Invoke-RestMethod -Method Post -Uri $apiUrl -Headers $headers -Body $body -ContentType 'application/json'
 
 # Upload asset
-$uploadUrl = $response.upload_url -replace "\{.*\}",""
 $assetName = Split-Path $ApkPath -Leaf
+$uploadUrl = $response.upload_url -replace "\{.*\}",""
 $uploadUri = "$uploadUrl?name=$assetName"
 
-Write-Output "Uploading asset $assetName..."
+Write-Output "Uploading asset $assetName to $uploadUri ..."
 Invoke-RestMethod -Method Post -Uri $uploadUri -Headers $headers -InFile $ApkPath -ContentType "application/vnd.android.package-archive"
 
 Write-Output "Release created: $($response.html_url)"
