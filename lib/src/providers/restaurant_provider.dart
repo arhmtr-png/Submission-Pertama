@@ -35,6 +35,8 @@ class RestaurantProvider with ChangeNotifier {
     try {
       final result = await apiService.fetchRestaurantList();
       _listResult = Success(result);
+      // Clear any previous search result when we refresh the full list
+      _searchResults = [];
     } catch (e) {
       _listResult = ErrorResult(friendlyErrorMessage(e));
     }
@@ -43,7 +45,9 @@ class RestaurantProvider with ChangeNotifier {
 
   Future<void> searchRestaurants(String query) async {
     if (query.isEmpty) {
-      // If query is empty, restore the full list by re-fetching.
+      // If query is empty, clear previous search results and restore the full list by re-fetching.
+      _searchResults = [];
+      notifyListeners();
       await fetchRestaurants();
       return;
     }

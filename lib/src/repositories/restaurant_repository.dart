@@ -10,4 +10,6 @@ abstract class RestaurantRepository {
   Future<bool> addFavorite(Restaurant restaurant);
   Future<bool> removeFavorite(String id);
   Future<bool> isFavorite(String id);
+  /// Attempt to sync local favorites with the server. Returns true on success.
+  Future<bool> syncFavorites(List<Restaurant> favorites);
 }

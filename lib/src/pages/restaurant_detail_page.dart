@@ -36,14 +36,14 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
     // Try to obtain ApiService from an existing RestaurantProvider synchronously.
     final api =
         widget.apiService ??
-        (() {
-          try {
-            final rp = Provider.of<RestaurantProvider>(context, listen: false);
-            return rp.apiService;
-          } catch (_) {
-            return ApiService();
-          }
-        })();
+            (() {
+              try {
+                final rp = Provider.of<RestaurantProvider>(context, listen: false);
+                return rp.apiService;
+              } catch (_) {
+                return ApiService();
+              }
+            })();
     _provider = RestaurantDetailProvider(apiService: api);
     // Begin fetching detail
     _provider.fetchDetail(widget.id);
@@ -66,8 +66,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             builder: (context, provider, _) => Text(provider.detail?.name ?? 'Detail'),
           ),
           actions: [
-            // Use a Builder to safely attempt to obtain FavoriteProvider.
-            // Tests may not provide FavoriteProvider, so gracefully fall back.
             Builder(
               builder: (context) {
                 final detailProv = Provider.of<RestaurantDetailProvider>(context, listen: false);
@@ -82,7 +80,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                 }
 
                 if (favProv == null) {
-                  // No FavoriteProvider available (e.g. in widget tests). Show a disabled icon.
                   return IconButton(
                     icon: const Icon(Icons.favorite_border),
                     onPressed: null,
@@ -100,7 +97,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           await favProv!.removeFavorite(id);
                         } else {
                           final d = detailProv.detail!;
-                          final r = Restaurant(id: d.id, name: d.name, pictureId: '', city: d.city, rating: d.rating);
+                          final r = Restaurant(id: d.id, name: d.name, pictureId: d.pictureId, city: d.city, rating: d.rating);
                           await favProv!.addFavorite(r);
                         }
                       },
@@ -115,7 +112,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           builder: (context, provider, _) {
             final result = provider.detailResult;
             if (result is Loading<RestaurantDetail>) {
-              // Detail skeleton
               final mq = MediaQuery.of(context);
               final isWide = mq.size.width > 700;
               final imageHeight = isWide ? 320.0 : 220.0;
@@ -125,9 +121,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   children: [
                     Container(
                       height: imageHeight,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest.withAlpha(0x66),
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(0x66),
                     ),
                     const SizedBox(height: 12),
                     Padding(
@@ -138,28 +132,19 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           Container(
                             height: 24,
                             width: 240,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest
-                                .withAlpha(0x66),
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(0x66),
                           ),
                           const SizedBox(height: 12),
                           Container(
                             height: 14,
                             width: double.infinity,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest
-                                .withAlpha(0x66),
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(0x66),
                           ),
                           const SizedBox(height: 8),
                           Container(
                             height: 14,
                             width: double.infinity,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest
-                                .withAlpha(0x66),
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(0x66),
                           ),
                         ],
                       ),
@@ -168,15 +153,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                 ),
               );
             } else if (result is ErrorResult<RestaurantDetail>) {
-              final msg = result.message.isNotEmpty
-                  ? result.message
-                  : 'Failed to load restaurant detail.';
+              final msg = result.message.isNotEmpty ? result.message : 'Failed to load restaurant detail.';
               return ErrorRetry(
                 message: msg,
                 onRetry: () => provider.fetchDetail(widget.id),
               );
-            } else if (result is Success<RestaurantDetail> &&
-                provider.detail != null) {
+            } else if (result is Success<RestaurantDetail> && provider.detail != null) {
               final detail = provider.detail!;
               final cs = Theme.of(context).colorScheme;
               final textTheme = Theme.of(context).textTheme;
@@ -193,9 +175,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       child: SizedBox(
                         height: imageHeight,
                         width: double.infinity,
-                        child: Container(
-                          color: cs.surfaceContainerHighest,
-                        ),
+                        child: detail.pictureId.isNotEmpty
+                            ? Image.network(
+                                'https://restaurant-api.dicoding.dev/images/medium/${detail.pictureId}',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: imageHeight,
+                                errorBuilder: (ctx, err, stack) => Container(color: cs.surfaceContainerHighest),
+                              )
+                            : Container(color: cs.surfaceContainerHighest),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -221,9 +209,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                 Text(
                                   '(${detail.customerReviews.length} reviews)',
                                   style: textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface.withAlpha(0xAA),
+                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(0xAA),
                                   ),
                                 ),
                             ],
@@ -348,15 +334,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                   onPressed: submitting
                                       ? null
                                       : () async {
-                                          final name = _nameController.text
-                                              .trim();
-                                          final review = _reviewController.text
-                                              .trim();
+                                          final name = _nameController.text.trim();
+                                          final review = _reviewController.text.trim();
                                           if (name.isEmpty || review.isEmpty) {
                                             if (!mounted) return;
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
+                                            ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
                                                 content: Text(
                                                   'Please enter name and review',
@@ -366,32 +348,21 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                             );
                                             return;
                                           }
-                                          final messenger =
-                                              ScaffoldMessenger.of(context);
-                                          final ok = await p.submitReview(
-                                            widget.id,
-                                            name,
-                                            review,
-                                          );
+                                          final messenger = ScaffoldMessenger.of(context);
+                                          final ok = await p.submitReview(widget.id, name, review);
                                           if (!mounted) return;
                                           if (ok) {
                                             _nameController.clear();
                                             _reviewController.clear();
                                             messenger.showSnackBar(
                                               SnackBar(
-                                                content: Text(
-                                                  'Review submitted',
-                                                  style: textTheme.bodyMedium,
-                                                ),
+                                                content: Text('Review submitted', style: textTheme.bodyMedium),
                                               ),
                                             );
                                           } else {
                                             messenger.showSnackBar(
                                               SnackBar(
-                                                content: Text(
-                                                  'Failed to submit review',
-                                                  style: textTheme.bodyMedium,
-                                                ),
+                                                content: Text('Failed to submit review', style: textTheme.bodyMedium),
                                               ),
                                             );
                                           }
@@ -400,9 +371,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                       ? const SizedBox(
                                           height: 18,
                                           width: 18,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
+                                          child: CircularProgressIndicator(strokeWidth: 2),
                                         )
                                       : const Text('Submit Review'),
                                 );

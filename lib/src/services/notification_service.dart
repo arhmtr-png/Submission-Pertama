@@ -26,10 +26,17 @@ class NotificationService {
     // APIs here to keep unit tests platform-independent.
   }
 
-  static Future<void> showDailyReminder({required int id, required String title, required String body, String? payload}) async {
-    const androidDetails = AndroidNotificationDetails('daily_reminder', 'Daily Reminder', importance: Importance.max, priority: Priority.high, styleInformation: BigTextStyleInformation(''));
-    const iosDetails = DarwinNotificationDetails();
-    await _plugin.show(id, title, body, const NotificationDetails(android: androidDetails, iOS: iosDetails), payload: payload);
+  static Future<void> showDailyReminder({required int id, required String title, required String body, String? payload, String? sound}) async {
+    final androidDetails = AndroidNotificationDetails(
+      'daily_reminder',
+      'Daily Reminder',
+      importance: Importance.max,
+      priority: Priority.high,
+      styleInformation: const BigTextStyleInformation(''),
+      sound: sound != null ? RawResourceAndroidNotificationSound(sound) : null,
+    );
+    final iosDetails = DarwinNotificationDetails(sound: sound != null ? '$sound.aiff' : null);
+    await _plugin.show(id, title, body, NotificationDetails(android: androidDetails, iOS: iosDetails), payload: payload);
   }
 
   /// Debug helper: show a test notification immediately. Useful during development

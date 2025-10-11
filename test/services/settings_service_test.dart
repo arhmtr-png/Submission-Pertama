@@ -3,23 +3,36 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fundamental/src/services/settings_service.dart';
 
 void main() {
-  group('SettingsService persistence', () {
-    final svc = SettingsService();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    setUp(() {
+  group('SettingsService', () {
+    late SettingsService service;
+
+    setUp(() async {
       SharedPreferences.setMockInitialValues({});
+      service = SettingsService();
     });
 
-    test('dark theme flag persists', () async {
-      await svc.setDarkTheme(true);
-      final v = await svc.isDarkTheme();
-      expect(v, isTrue);
+    test('default theme is false (light)', () async {
+      final isDark = await service.isDarkTheme();
+      expect(isDark, isFalse);
     });
 
-    test('daily reminder flag persists', () async {
-      await svc.setDailyReminderActive(true);
-      final v = await svc.isDailyReminderActive();
-      expect(v, isTrue);
+    test('set and get dark theme persist', () async {
+      await service.setDarkTheme(true);
+      final isDark = await service.isDarkTheme();
+      expect(isDark, isTrue);
+    });
+
+    test('default daily reminder is false', () async {
+      final active = await service.isDailyReminderActive();
+      expect(active, isFalse);
+    });
+
+    test('set and get daily reminder persist', () async {
+      await service.setDailyReminderActive(true);
+      final active = await service.isDailyReminderActive();
+      expect(active, isTrue);
     });
   });
 }

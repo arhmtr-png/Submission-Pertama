@@ -208,6 +208,39 @@ If you need any adjustments or want me to add integration tests or CI deployment
 
 - Daily reminders use `workmanager` to schedule a periodic task and `flutter_local_notifications` to display the notification. The task uses a simple fetch from the Dicoding Restaurant API and shows a daily suggestion notification. Enable/disable the reminder in the Settings page; the provider registers/cancels the Workmanager task accordingly.
 
+### Daily reminders / Workmanager notes
+
+- Workmanager registers a periodic background task using `registerPeriodicTask`. On Android the minimum repeat interval is platform dependent; the package enforces platform constraints. For reliable end-to-end tests, run the app on a real device and use the *Send test notification* button in Settings to validate notifications immediately.
+
+- The background task fetches the restaurants list from `https://restaurant-api.dicoding.dev/list` and chooses a restaurant to recommend. Errors in the background task are swallowed to avoid crashing the background worker.
+
+- Because `workmanager` runs in a separate background isolate and native layer, full automation of scheduling and notification showing requires a device/emulator. Unit tests in this repo avoid calling platform-specific APIs directly — they exercise the provider's scheduling logic and use debug helpers for manual verification.
+
+### How to run the release script (PowerShell)
+
+1. Build the APK locally (release):
+
+```powershell
+flutter pub get
+flutter build apk --release
+```
+
+2. Set the `GITHUB_TOKEN` environment variable in PowerShell (temporary for the session):
+
+```powershell
+#$env:GITHUB_TOKEN = 'ghp_xxx' # DO NOT commit your token
+```
+
+3. Run the script to create a release and upload the APK (replace tag/title as desired):
+
+```powershell
+.\scripts\create_release.ps1 -Tag v1.0-release -ApkPath "build\app\outputs\flutter-apk\app-release.apk" -Title "v1.0 Release" -NotesFile RELEASE_NOTES.md
+```
+
+4. If you prefer the GitHub CLI (gh) and it's authenticated, the script will use it automatically.
+
+Security note: Keep your `GITHUB_TOKEN` secret. The script reads this environment variable for authentication when `gh` is not available.
+
 ## Troubleshooting: Gradle / Kotlin / JDK build issues (observed)
 
 During a local attempt to build the Android APK a Gradle/Kotlin compilation failure was observed. Below are

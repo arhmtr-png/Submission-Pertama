@@ -4,11 +4,16 @@ import 'package:flutter/foundation.dart';
 import '../services/notification_service.dart';
 import '../providers/settings_provider.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   static const routeName = '/settings';
 
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     // Use context.watch/read for clearer intent and local variables for values.
@@ -29,12 +34,13 @@ class SettingsPage extends StatelessWidget {
               final messenger = ScaffoldMessenger.of(context);
               final provider = context.read<SettingsProvider>();
               try {
-                // call provider method and await without using context after await
                 await provider.setDarkTheme(v);
+                if (!mounted) return;
                 messenger.showSnackBar(
                   SnackBar(content: Text('Theme set to ${v ? 'Dark' : 'Light'}')),
                 );
               } catch (e) {
+                if (!mounted) return;
                 messenger.showSnackBar(
                   SnackBar(content: Text('Failed to set theme: $e')),
                 );
@@ -51,10 +57,12 @@ class SettingsPage extends StatelessWidget {
               final provider = context.read<SettingsProvider>();
               try {
                 await provider.setDailyReminderActive(v);
+                if (!mounted) return;
                 messenger.showSnackBar(
                   SnackBar(content: Text('Daily reminder ${v ? 'enabled' : 'disabled'}')),
                 );
               } catch (e) {
+                if (!mounted) return;
                 messenger.showSnackBar(
                   SnackBar(content: Text('Failed to update reminder: $e')),
                 );
@@ -72,8 +80,10 @@ class SettingsPage extends StatelessWidget {
                   try {
                     final messenger = ScaffoldMessenger.of(context);
                     await NotificationService.showTestNotification();
+                    if (!mounted) return;
                     messenger.showSnackBar(const SnackBar(content: Text('Test notification sent')));
                   } catch (e) {
+                    if (!mounted) return;
                     final messenger = ScaffoldMessenger.of(context);
                     messenger.showSnackBar(SnackBar(content: Text('Failed to send test notification: $e')));
                   }

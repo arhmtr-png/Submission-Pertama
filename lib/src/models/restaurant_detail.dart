@@ -28,6 +28,7 @@ class CustomerReview {
 class RestaurantDetail {
   final String id;
   final String name;
+  final String pictureId;
   final String description;
   final String city;
   final String address;
@@ -39,6 +40,7 @@ class RestaurantDetail {
   RestaurantDetail({
   required this.id,
   required this.name,
+    required this.pictureId,
     required this.description,
     required this.city,
     required this.address,
@@ -67,8 +69,9 @@ class RestaurantDetail {
         [];
 
     return RestaurantDetail(
-  id: json['id'] as String,
-  name: json['name'] as String,
+      id: json['id'] as String,
+      name: json['name'] as String,
+      pictureId: json['pictureId'] as String? ?? '',
       description: json['description'] as String,
       city: json['city'] as String,
       address: json['address'] as String,

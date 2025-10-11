@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../src/models/restaurant_model.dart';
 import '../../src/models/restaurant_detail.dart';
 import '../../src/services/api_service.dart';
@@ -93,6 +95,20 @@ class LocalRestaurantRepository implements RestaurantRepository {
     try {
       return await dbHelper.isFavorite(id);
     } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> syncFavorites(List<Restaurant> favorites) async {
+    try {
+      // Simple POST to a demo endpoint. The server should accept JSON array of favorites.
+      final uri = Uri.parse('https://example.com/api/syncFavorites');
+      final body = favorites.map((f) => f.toJson()).toList();
+      final res = await http.post(uri, body: json.encode(body), headers: {'Content-Type': 'application/json'});
+      return res.statusCode >= 200 && res.statusCode < 300;
+    } catch (_) {
+      // Non-fatal in background
       return false;
     }
   }

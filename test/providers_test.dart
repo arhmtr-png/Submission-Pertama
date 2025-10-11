@@ -57,6 +57,7 @@ void main() {
     final detail = RestaurantDetail(
       id: 'r1',
       name: 'Resto',
+      pictureId: 'test-picture',
       description: 'Desc',
       city: 'City',
       address: 'Addr',

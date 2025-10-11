@@ -21,6 +21,7 @@ void main() {
     final detail = RestaurantDetail(
       id: 'r1',
       name: 'List Resto',
+      pictureId: 'test-picture',
       description: 'Description',
       city: 'City',
       address: 'Addr',
@@ -68,6 +69,7 @@ void main() {
     final detail = RestaurantDetail(
       id: 'r2',
       name: 'Detail Resto',
+      pictureId: 'test-picture',
       description: 'Desc',
       city: 'City',
       address: 'Addr',

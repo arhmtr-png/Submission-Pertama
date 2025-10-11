@@ -8,7 +8,7 @@ import 'src/pages/restaurant_list_page.dart';
 import 'src/pages/restaurant_detail_page.dart';
 import 'src/pages/favorites_page.dart';
 import 'src/pages/settings_page.dart';
-import 'src/theme/tourism_theme.dart';
+import 'src/theme/app_theme.dart';
 import 'src/services/notification_service.dart';
 import 'src/services/background_service.dart';
 import 'src/providers/settings_provider.dart';
@@ -27,7 +27,7 @@ void main() async {
   });
   // Initialize Workmanager with our callback dispatcher
   Workmanager().initialize(
-    BackgroundService.callbackDispatcher,
+    callbackDispatcher,
     // ignore: deprecated_member_use
     isInDebugMode: false,
   );
@@ -57,29 +57,33 @@ class MyApp extends StatelessWidget {
           create: (ctx) => FavoriteProvider(repository: ctx.read<LocalRestaurantRepository>()),
         ),
       ],
-      child: MaterialApp(
-        navigatorKey: navigatorKey,
-        title: 'Restaurant App',
-        themeMode: ThemeMode.system,
-        theme: TourismTheme.light(),
-        darkTheme: TourismTheme.dark(),
-        home: const RestaurantListPage(),
-        onGenerateRoute: (settings) {
-          // Handle notification deep links by expecting a route named '/detail' with an id
-          if (settings.name == '/detail' && settings.arguments is Map) {
-            final args = settings.arguments as Map;
-            final id = args['id'] as String?;
-            if (id != null) {
-              return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id));
-            }
-          }
-          if (settings.name == FavoritesPage.routeName) {
-            return MaterialPageRoute(builder: (_) => const FavoritesPage());
-          }
-          if (settings.name == SettingsPage.routeName) {
-            return MaterialPageRoute(builder: (_) => const SettingsPage());
-          }
-          return null;
+        child: Consumer<SettingsProvider>(
+        builder: (context, settings, _) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'Restaurant App',
+            themeMode: settings.isDark ? ThemeMode.dark : ThemeMode.light,
+            theme: AppTheme.light(),
+            darkTheme: AppTheme.dark(),
+            home: const RestaurantListPage(),
+            onGenerateRoute: (routeSettings) {
+              // Handle notification deep links by expecting a route named '/detail' with an id
+              if (routeSettings.name == '/detail' && routeSettings.arguments is Map) {
+                final args = routeSettings.arguments as Map;
+                final id = args['id'] as String?;
+                if (id != null) {
+                  return MaterialPageRoute(builder: (_) => RestaurantDetailPage(id: id));
+                }
+              }
+              if (routeSettings.name == FavoritesPage.routeName) {
+                return MaterialPageRoute(builder: (_) => const FavoritesPage());
+              }
+              if (routeSettings.name == SettingsPage.routeName) {
+                return MaterialPageRoute(builder: (_) => const SettingsPage());
+              }
+              return null;
+            },
+          );
         },
       ),
     );

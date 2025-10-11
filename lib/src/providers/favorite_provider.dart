@@ -1,11 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/restaurant_model.dart';
 import '../repositories/restaurant_repository.dart';
+import '../services/notification_service.dart';
 
 class FavoriteProvider with ChangeNotifier {
   final RestaurantRepository repository;
 
-  FavoriteProvider({required this.repository}) {
+  final NotificationService? notificationService;
+
+  FavoriteProvider({required this.repository, this.notificationService}) {
     _loadFavorites();
   }
 
@@ -17,6 +21,7 @@ class FavoriteProvider with ChangeNotifier {
 
   Future<void> _loadFavorites() async {
     try {
+      // Load favorites from DB first (source of truth).
       final list = await repository.getFavorites();
       _favorites = list;
       _error = '';
@@ -31,8 +36,30 @@ class FavoriteProvider with ChangeNotifier {
     try {
       final ok = await repository.addFavorite(restaurant);
       if (ok) {
-        _favorites.add(restaurant);
-        notifyListeners();
+        final exists = _favorites.any((r) => r.id == restaurant.id);
+        if (!exists) {
+          _favorites.add(restaurant);
+          notifyListeners();
+          // Persist id to SharedPreferences for quick restore (non-fatal)
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            final ids = prefs.getStringList('favorite_ids') ?? [];
+            if (!ids.contains(restaurant.id)) {
+              ids.add(restaurant.id);
+              await prefs.setStringList('favorite_ids', ids);
+            }
+          } catch (_) {
+            // ignore SharedPreferences errors in tests/environments without the plugin
+          }
+          // Show a simple immediate notification to confirm action.
+          try {
+            await NotificationService.showDailyReminder(
+              id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+              title: 'Added to favorites',
+              body: '${restaurant.name} was added to your favorites',
+            );
+          } catch (_) {}
+        }
       }
       return ok;
     } catch (e) {
@@ -48,6 +75,23 @@ class FavoriteProvider with ChangeNotifier {
       if (ok) {
         _favorites.removeWhere((r) => r.id == id);
         notifyListeners();
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final ids = prefs.getStringList('favorite_ids') ?? [];
+          if (ids.contains(id)) {
+            ids.remove(id);
+            await prefs.setStringList('favorite_ids', ids);
+          }
+        } catch (_) {
+          // ignore prefs errors
+        }
+        try {
+          await NotificationService.showDailyReminder(
+            id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+            title: 'Removed from favorites',
+            body: 'Restaurant removed from favorites',
+          );
+        } catch (_) {}
       }
       return ok;
     } catch (e) {

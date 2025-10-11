@@ -39,6 +39,7 @@ class FakeApiService implements ApiService {
       detailResponse = RestaurantDetail(
         id: detailResponse!.id,
         name: detailResponse!.name,
+        pictureId: detailResponse!.pictureId,
         description: detailResponse!.description,
         city: detailResponse!.city,
         address: detailResponse!.address,
