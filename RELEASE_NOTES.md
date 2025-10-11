@@ -1,46 +1,41 @@
-# v1.0 Release Notes
+````markdown
+# v1.0-final Release Notes
 
-Release: v1.0-release
-Date: 2025-10-10
+Release: v1.0-final
+Date: 2025-10-11
 
 Summary
 -------
-This is the first stable release of the Fundamental Flutter app. Key highlights:
+This is the final release of the Fundamental Flutter app for submission. Key highlights:
 
-- Favorites: Add/remove restaurants to Favorites with persistence via SQLite.
-- Daily reminder: Settings option to enable daily recommended restaurant notifications (Workmanager + local notifications).
-- Notification test helper: Debug-only button in Settings to trigger a test notification.
-- Repository and providers: `LocalRestaurantRepository` implemented and wired into providers.
-- Tests: Full unit and widget test suite passing locally. Integration tests passed on Android device (RR8R400MQNN).
+- Favorites: Add/remove restaurants to Favorites with persistence via SQLite and a SharedPreferences quick cache.
+- Daily reminder: Settings option to enable daily recommended restaurant notifications (Workmanager + flutter_local_notifications).
+- Notifications: Debug test notification button; immediate notifications on favorite add/remove.
+- Background sync: Background favorites sync task implemented (placeholder endpoint).
+- Theming: Light and dark theme implemented using ColorScheme seed.
+- Tests: Unit and widget tests pass locally.
 
 Files
 -----
-- APK: `build/app/outputs/flutter-apk/app-release.apk` (47.5 MB)
-- Tag: `v1.0-release`
+- APK: `build/app/outputs/flutter-apk/app-release.apk` (attached to release)
+- Tag: `v1.0-final`
 
 How to install the APK
 ----------------------
 1. Connect your Android device and enable USB debugging.
-2. Run:
+2. Install the APK (PowerShell):
 
 ```powershell
-adb install -r build\app\outputs\flutter-apk\app-release.apk
+adb install -r build\\app\\outputs\\flutter-apk\\app-release.apk
 ```
 
-Creating the GitHub release (locally)
--------------------------------------
-A helper script `scripts/create_release.ps1` is included to create the release using the GitHub CLI (`gh`) or the GitHub API (via `GITHUB_TOKEN`). See the script for details. Example using gh:
-
-```powershell
-# from repository root
-.\scripts\create_release.ps1 -Tag v1.0-release -ApkPath "build\app\outputs\flutter-apk\app-release.apk" -Title "v1.0 Release" -NotesFile RELEASE_NOTES.md
-```
-
-Known issues / notes
---------------------
-- Android 13+ requires POST_NOTIFICATIONS permission; the manifest includes the permission. Runtime permission may still be necessary depending on device/Android version.
-- Workmanager tasks can behave differently on emulators; use the debug test notification in Settings for quick verification.
+Notes
+-----
+- Android 13+ requires runtime POST_NOTIFICATIONS permission.
+- Workmanager background tasks require a real device to verify reliably.
 
 Contact
 -------
-If you want me to run the GitHub release command here, provide an authentication method (preferred: run the included script locally, or authenticate `gh` yourself). I will not accept tokens or credentials via chat.
+If you want changes to the release notes or to attach additional assets, tell me and I will update the release.
+
+````

@@ -5,6 +5,14 @@ A new Flutter project.
 [![Flutter CI](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml/badge.svg)](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter.yml)
 [![Release v1.0.0](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/arhmtr-png/Submission-Pertama/releases/tag/v1.0.0)
 
+## Release v1.0-final
+
+The release APK for this submission is available here:
+
+[Download APK (release v1.0-final)](https://github.com/arhmtr-png/Submission-Pertama/releases/download/v1.0-final/app-release.apk)
+
+Release notes are available in `RELEASE_NOTES.md` in the repository root.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
