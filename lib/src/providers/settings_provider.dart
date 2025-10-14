@@ -34,12 +34,23 @@ class SettingsProvider with ChangeNotifier {
     // Schedule or cancel the background Workmanager task. Wrapped in try/catch
     // so tests (where Workmanager isn't available) don't fail.
     try {
+      // QUICK TEST: when debugging, allow scheduling to fire in ~1 minute so
+      // we can verify notifications quickly. Set to `false` to restore normal
+      // 11:00 scheduling. This is a temporary dev helper and should be
+      // reverted before final release if undesired.
+      const bool _kQuickReminderTest = true;
       final now = DateTime.now();
-      var next = DateTime(now.year, now.month, now.day, 11, 0);
-      if (!next.isAfter(now)) {
-        next = next.add(const Duration(days: 1));
+      Duration initialDelay;
+      if (_kQuickReminderTest && kDebugMode && value) {
+        // Schedule ~1 minute from now for quick verification.
+        initialDelay = const Duration(minutes: 1);
+      } else {
+        var next = DateTime(now.year, now.month, now.day, 11, 0);
+        if (!next.isAfter(now)) {
+          next = next.add(const Duration(days: 1));
+        }
+        initialDelay = next.difference(now);
       }
-      final initialDelay = next.difference(now);
 
       if (value) {
         await Workmanager().registerPeriodicTask(
