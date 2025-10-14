@@ -46,7 +46,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final settingsService = SettingsService();
-  final favoriteRepository = InMemoryFavoriteRepository();
+  // Use the SQLite-backed FavoriteRepository for runtime so favorites persist
+  // across app restarts in the release APK. Tests and injection can still
+  // provide InMemoryFavoriteRepository via AppRoot.
+  final favoriteRepository = FavoriteRepository();
 
   await NotificationService.init();
   Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
