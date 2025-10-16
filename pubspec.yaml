@@ -17,10 +17,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  # Relax the SDK constraint so CI images with older Dart (e.g. 3.0.5)
-  # can still run `flutter pub get` during CI. If you prefer stricter
-  # enforcement, revert to '^3.9.2' and pin a matching Flutter SDK in CI.
-  sdk: '>=3.0.0 <5.0.0'
+  # Require a Dart SDK compatible with Flutter 4.x. If CI runner provides
+  # a Flutter 4.x stable channel, this constraint will allow the restored
+  # plugins (workmanager, flutter_local_notifications) to be resolved.
+  sdk: '>=3.9.2 <5.0.0'
 
 dependencies:
   flutter:
@@ -36,14 +36,12 @@ dependencies:
   # Keep path compatible with the Flutter SDK on CI (flutter_test bundles path 1.8.3)
   path: ^1.8.3
   shared_preferences: ^2.1.1
-  # workmanager removed temporarily for CI compatibility (requires newer Dart)
-  # Re-add when CI uses a Flutter/Dart SDK that satisfies >=3.5.0
-  # flutter_local_notifications removed temporarily for CI compatibility.
-  # This plugin requires Android embedding v2. Migrate the Android project
-  # to embedding v2 and/or pin a newer Flutter/Dart SDK in the CI to re-add
-  # these entries. Re-add when CI uses a newer SDK or after migration.
-  # flutter_local_notifications: ^13.0.0
-  # flutter_local_notifications_linux: ^3.0.0+1
+  # Background scheduling and local notifications (re-added now that the
+  # CI workflow requests Flutter 4.x). These packages target newer Dart/AGP
+  # and require Android embedding v2 — ensure android project is migrated.
+  workmanager: ^0.9.0+3
+  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications_linux: ^3.0.0+1
   # (dependencies above are the required packages; duplicates were removed)
 
 dev_dependencies:

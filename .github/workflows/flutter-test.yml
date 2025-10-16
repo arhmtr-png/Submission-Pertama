@@ -22,13 +22,12 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          # Pin a known stable Flutter SDK version to avoid runner/channel resolution
-          # issues on some hosted images. Update this value if you need a newer SDK.
-          # Pin a Flutter SDK that is available on the hosted runners. We
-          # previously validated that '3.10.5' is downloadable on the runner
-          # image. With the relaxed pubspec Dart constraint, this should
-          # allow `flutter pub get` to succeed during CI.
-          flutter-version: '3.10.5'
+          # Pin a recent Flutter stable that bundles a newer Dart SDK so
+          # native plugins (workmanager, flutter_local_notifications) can
+          # be resolved and the code compiled. If this exact tag isn't
+          # available on the hosted runner, the workflow run will fail and
+          # I'll iterate to a nearby 4.x patch.
+          flutter-version: '4.0.3'
           channel: 'stable'
 
       - name: Install dependencies
