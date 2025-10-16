@@ -19,9 +19,9 @@ jobs:
         with:
           # Pin a known stable Flutter SDK version to avoid runner/channel resolution
           # issues on some hosted images. Update this value if you need a newer SDK.
-          # Use the latest stable Flutter SDK available on the runner to ensure
-          # the bundled Dart SDK satisfies the project's pubspec constraint.
-          flutter-version: 'latest'
+          # Pin a recent Flutter 4.x release that includes a Dart SDK >= 3.9.2
+          # (replace with a newer patch if you want to upgrade later).
+          flutter-version: '4.0.0'
           channel: 'stable'
 
       - name: Install dependencies
