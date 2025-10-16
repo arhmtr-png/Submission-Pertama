@@ -1,0 +1,26 @@
+name: Flutter unit tests
+
+on:
+  push:
+    branches: [ pr/finalize-dicoding, Flutter-Fundamental-V.1 ]
+  pull_request:
+    branches: [ Flutter-Pemula ]
+
+jobs:
+  test:
+    name: Run Flutter tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test --no-pub --reporter=expanded
