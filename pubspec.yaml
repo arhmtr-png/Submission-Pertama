@@ -42,7 +42,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  # flutter_lints removed temporarily for CI compatibility (runner Dart SDK is older).
+  # Re-add a matching version locally when upgrading the CI Flutter SDK.
 
 flutter:
   uses-material-design: true
