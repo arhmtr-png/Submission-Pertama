@@ -30,6 +30,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth < 600 ? 20 : 28,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -38,7 +39,7 @@ class HomePage extends StatelessWidget {
                       'Proyek sederhana untuk mempelajari widget statis dan dinamis, navigasi, dan layout responsif.',
                       style: TextStyle(
                         fontSize: screenWidth < 600 ? 14 : 16,
-                        color: Colors.grey[800],
+                        color: Colors.black87,
                       ),
                       textAlign: TextAlign.center,
                     ),

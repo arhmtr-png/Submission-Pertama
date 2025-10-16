@@ -51,7 +51,7 @@ class RestaurantProvider with ChangeNotifier {
         }
       } else {
         _state = RestaurantError(
-          'Failed to load restaurants (server returned ${res.statusCode}).',
+          'Could not load restaurants. Please check your connection and try again.',
         );
       }
     } catch (e) {

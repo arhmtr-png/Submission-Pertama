@@ -37,8 +37,11 @@ class DetailsPage extends StatelessWidget {
           final isFav = favProv.isFavorite(restaurant['id']?.toString() ?? '');
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text(restaurant['name']?.toString() ?? 'Details Page'),
+              appBar: AppBar(
+              title: Text(
+                restaurant['name']?.toString() ?? 'Details Page',
+                style: const TextStyle(color: Colors.black87),
+              ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
@@ -169,7 +172,13 @@ class DetailsPage extends StatelessWidget {
                             child: LinearProgressIndicator(),
                           ),
                         if (detailsProv.error != null)
-                          Text('Error: ${detailsProv.error}'),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              detailsProv.error!,
+                              style: TextStyle(color: Colors.red[700]),
+                            ),
+                          ),
                         Text(
                           restaurant['description']?.toString() ??
                               'No description available.',
