@@ -25,7 +25,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  # Use an older cupertino_icons compatible with the runner's Dart SDK (3.0.5)
+  # to allow CI dependency resolution to succeed. This can be bumped later
+  # when CI uses a newer Flutter/Dart SDK.
+  cupertino_icons: ^1.0.2
   http: ^0.13.6
   provider: ^6.0.5
   google_fonts: ^4.0.4
