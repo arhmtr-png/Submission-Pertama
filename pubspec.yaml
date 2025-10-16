@@ -33,7 +33,8 @@ dependencies:
   # Keep path compatible with the Flutter SDK on CI (flutter_test bundles path 1.8.3)
   path: ^1.8.3
   shared_preferences: ^2.1.1
-  workmanager: ^0.9.0+3
+  # workmanager removed temporarily for CI compatibility (requires newer Dart)
+  # Re-add when CI uses a Flutter/Dart SDK that satisfies >=3.5.0
   # Use recent flutter_local_notifications that targets modern AGP/Kotlin
   flutter_local_notifications: ^13.0.0
   # Keep linux implementation pinned to a compatible release
