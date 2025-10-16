@@ -13,6 +13,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # For pull_request events prefer the head ref so CI runs against
+          # the branch under test instead of the merged commit (which may
+          # include incompatible deps from the base branch).
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
