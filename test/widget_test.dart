@@ -10,7 +10,7 @@ import 'package:submission_pertama/main.dart';
 
 void main() {
   testWidgets('Simple home smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const SubmissionPertamaApp());
+    await tester.pumpWidget(const AppRoot());
 
     // Home should show Sign In and Open Gallery actions
     expect(find.text('Sign In'), findsOneWidget);

@@ -7,14 +7,12 @@ void main() {
   testWidgets('Results page displays email and timestamp', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const SubmissionPertamaApp());
-
-    // Pump ResultsPage directly with constructor args
-    await tester.pumpWidget(const SubmissionPertamaApp());
+    await tester.pumpWidget(const AppRoot());
     await tester.pumpAndSettle();
-    await tester.pumpWidget(const SubmissionPertamaApp());
+
+    // Pump ResultsPage directly with constructor args (isolated)
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: ResultsPage(
           email: 'jane@example.com',
           timestamp: '2025-10-03T12:00:00',

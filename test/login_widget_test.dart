@@ -6,7 +6,7 @@ void main() {
   testWidgets('Login form validation and navigation', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const SubmissionPertamaApp());
+    await tester.pumpWidget(const AppRoot());
 
     // Open Login page
     await tester.tap(find.text('Sign In'));
