@@ -66,5 +66,48 @@ void main() {
       final restored = (rp.state as RestaurantData).restaurants;
       expect(restored.length, 3);
     });
+
+    test('whitespace-only query treats as clear and restores full list', () async {
+      final mockClient = MockClient((request) async {
+        return http.Response(sampleResponse, 200);
+      });
+
+      final rp = RestaurantProvider(client: mockClient);
+      await rp.fetchAll();
+
+      await rp.search('   '); // only spaces
+      expect(rp.state is RestaurantData, true);
+      final restored = (rp.state as RestaurantData).restaurants;
+      expect(restored.length, 3);
+    });
+
+    test('large list filtering performs and returns correct subset', () async {
+      // create a large list (1000 items) with a few targeted matches
+      final largeList = List.generate(1000, (i) {
+        return {
+          'id': '${i + 1}',
+          'name': 'Restaurant ${i + 1}',
+          'city': i % 10 == 0 ? 'Jakarta' : 'City${i % 50}',
+          'rating': 4.0
+        };
+      });
+      // inject a few named matches
+      largeList[10]['name'] = 'Alpha Cafe';
+      largeList[200]['name'] = 'Alpha Cafe 2';
+
+      final response = jsonEncode({'restaurants': largeList});
+
+      final mockClient = MockClient((request) async {
+        return http.Response(response, 200);
+      });
+
+      final rp = RestaurantProvider(client: mockClient);
+      await rp.fetchAll();
+
+      await rp.search('alpha');
+      expect(rp.state is RestaurantData, true);
+      final data = (rp.state as RestaurantData).restaurants;
+      expect(data.length, 2);
+    });
   });
 }
