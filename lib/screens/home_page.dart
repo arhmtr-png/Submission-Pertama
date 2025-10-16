@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import '../src/providers/settings_provider.dart';
-import '../src/services/notification_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -95,17 +94,12 @@ class HomePage extends StatelessWidget {
                         width: screenWidth < 600 ? double.infinity : 300,
                         height: 44,
                         child: ElevatedButton(
-                          key: const Key('home_debug_notify'),
+                          key: const Key('home_open_dev'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orangeAccent,
                           ),
-                          onPressed: () async {
-                            await NotificationService.showImmediateTestNotification();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Test notification sent')),
-                            );
-                          },
-                          child: const Text('Send Test Notification'),
+                          onPressed: () => Navigator.pushNamed(context, '/dev'),
+                          child: const Text('Open Dev Tools'),
                         ),
                       ),
                       const SizedBox(height: 12),

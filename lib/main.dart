@@ -9,6 +9,7 @@ import 'screens/results_page.dart';
 import 'screens/gallery_page.dart';
 import 'screens/error_page.dart';
 import 'screens/restaurants_page.dart';
+import 'screens/dev_screen.dart';
 import 'src/providers/settings_provider.dart';
 import 'src/services/settings_service.dart';
 import 'src/providers/favorite_provider.dart';
@@ -123,7 +124,8 @@ class SubmissionPertamaApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/results': (context) => const ResultsPage(),
         '/gallery': (context) => const GalleryPage(),
-        '/restaurants': (context) => const RestaurantsPage(),
+  '/restaurants': (context) => const RestaurantsPage(),
+  '/dev': (context) => const DevScreen(),
         '/error': (context) => const ErrorPage(),
       },
     );
