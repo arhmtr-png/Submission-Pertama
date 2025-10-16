@@ -8,11 +8,13 @@ import 'screens/login_page.dart';
 import 'screens/results_page.dart';
 import 'screens/gallery_page.dart';
 import 'screens/error_page.dart';
+import 'screens/restaurants_page.dart';
 import 'src/providers/settings_provider.dart';
 import 'src/services/settings_service.dart';
 import 'src/providers/favorite_provider.dart';
 import 'src/data/favorite_repository.dart';
 import 'src/providers/gallery_provider.dart';
+import 'src/providers/restaurant_provider.dart';
 import 'src/services/background_service.dart';
 import 'src/services/notification_service.dart';
 
@@ -79,6 +81,7 @@ class AppRoot extends StatelessWidget {
           create: (_) => SettingsProvider(service: settingsSvc),
         ),
         ChangeNotifierProvider(create: (_) => GalleryProvider()),
+        ChangeNotifierProvider(create: (_) => RestaurantProvider()),
         ChangeNotifierProvider<FavoriteProvider>(
           create: (_) => FavoriteProvider(repository: favRepo),
         ),
@@ -120,6 +123,7 @@ class SubmissionPertamaApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/results': (context) => const ResultsPage(),
         '/gallery': (context) => const GalleryPage(),
+        '/restaurants': (context) => const RestaurantsPage(),
         '/error': (context) => const ErrorPage(),
       },
     );

@@ -40,7 +40,8 @@ class DetailsProvider with ChangeNotifier {
         _error = 'Failed to load details (${res.statusCode})';
       }
     } catch (e) {
-      _error = e.toString();
+      _error =
+          'Could not load restaurant details. Please check your connection and try again.';
     }
     _loading = false;
     notifyListeners();

@@ -49,4 +49,15 @@ class NotificationService {
       payload: payload,
     );
   }
+
+  /// Debug helper: show an immediate test notification. Intended for
+  /// development only and safe to call from UI guarded by `kDebugMode`.
+  static Future<void> showImmediateTestNotification() async {
+    await showDailyReminder(
+      id: 9999,
+      title: 'Test Notification',
+      body: 'This is a debug test notification.',
+      payload: 'debug',
+    );
+  }
 }
