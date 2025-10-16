@@ -11,12 +11,13 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscure = true;
+  final ValueNotifier<bool> _obscure = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _obscure.dispose();
     super.dispose();
   }
 
@@ -84,29 +85,34 @@ class _LoginPageState extends State<LoginPage> {
                   Semantics(
                     label: 'Password field',
                     textField: true,
-                    child: TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscure,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        prefixIcon: const Icon(Icons.lock),
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          tooltip: _obscure ? 'Show password' : 'Hide password',
-                          icon: Icon(
-                            _obscure ? Icons.visibility : Icons.visibility_off,
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: _obscure,
+                      builder: (context, ob, child) {
+                        return TextFormField(
+                          controller: _passwordController,
+                          obscureText: ob,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: const Icon(Icons.lock),
+                            border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              tooltip: ob ? 'Show password' : 'Hide password',
+                              icon: Icon(
+                                ob ? Icons.visibility : Icons.visibility_off,
+                              ),
+                              onPressed: () => _obscure.value = !_obscure.value,
+                            ),
                           ),
-                          onPressed: () => setState(() => _obscure = !_obscure),
-                        ),
-                      ),
-                      validator: (v) {
-                        if (v == null || v.isEmpty) {
-                          return 'Password is required';
-                        }
-                        if (v.length < 4) {
-                          return 'Password too short';
-                        }
-                        return null;
+                          validator: (v) {
+                            if (v == null || v.isEmpty) {
+                              return 'Password is required';
+                            }
+                            if (v.length < 4) {
+                              return 'Password too short';
+                            }
+                            return null;
+                          },
+                        );
                       },
                     ),
                   ),

@@ -89,36 +89,42 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 24),
                     // Settings toggles — tolerant when SettingsProvider isn't
                     // available (some tests pump this page in isolation).
-                    Builder(builder: (context) {
-                      SettingsProvider? sp;
-                      try {
-                        sp = Provider.of<SettingsProvider>(context);
-                      } catch (_) {
-                        sp = null;
-                      }
+                    Builder(
+                      builder: (context) {
+                        SettingsProvider? sp;
+                        try {
+                          sp = Provider.of<SettingsProvider>(context);
+                        } catch (_) {
+                          sp = null;
+                        }
 
-                      final isDark = sp?.isDark ?? false;
-                      final daily = sp?.dailyReminderActive ?? false;
+                        final isDark = sp?.isDark ?? false;
+                        final daily = sp?.dailyReminderActive ?? false;
 
-                      return Column(
-                        children: [
-                          SwitchListTile.adaptive(
-                            title: const Text('Dark Theme'),
-                            subtitle: const Text('Use dark mode for the app'),
-                            value: isDark,
-                            onChanged: sp != null ? (v) => sp!.setDarkTheme(v) : null,
-                          ),
-                          SwitchListTile.adaptive(
-                            title: const Text('Daily Reminder'),
-                            subtitle: const Text('Receive a daily reminder at 11:00'),
-                            value: daily,
-                            onChanged: sp != null
-                                ? (v) => sp!.setDailyReminderActive(v)
-                                : null,
-                          ),
-                        ],
-                      );
-                    }),
+                        return Column(
+                          children: [
+                            SwitchListTile.adaptive(
+                              title: const Text('Dark Theme'),
+                              subtitle: const Text('Use dark mode for the app'),
+                              value: isDark,
+                              onChanged: sp != null
+                                  ? (v) => sp!.setDarkTheme(v)
+                                  : null,
+                            ),
+                            SwitchListTile.adaptive(
+                              title: const Text('Daily Reminder'),
+                              subtitle: const Text(
+                                'Receive a daily reminder at 11:00',
+                              ),
+                              value: daily,
+                              onChanged: sp != null
+                                  ? (v) => sp!.setDailyReminderActive(v)
+                                  : null,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               );

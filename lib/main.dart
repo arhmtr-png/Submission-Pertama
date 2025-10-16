@@ -52,7 +52,7 @@ void main() async {
   final favoriteRepository = FavoriteRepository();
 
   await NotificationService.init();
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+  Workmanager().initialize(callbackDispatcher);
 
   runApp(
     AppRoot(
@@ -93,12 +93,12 @@ class SubmissionPertamaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SettingsProvider? settings;
-    try {
-      settings = Provider.of<SettingsProvider>(context);
-    } catch (_) {
-      settings = null;
-    }
+    // Be tolerant in tests: if SettingsProvider isn't present (widget tests
+    // that pump only parts of the tree), fall back to defaults. When the
+    // provider exists the returned value will still be listened to because
+    // we use `Provider.of` with a nullable type and the default listening
+    // behavior.
+    final settings = Provider.of<SettingsProvider?>(context);
     final isDark = settings?.isDark ?? false;
 
     return MaterialApp(

@@ -18,6 +18,10 @@ class _GalleryPageState extends State<GalleryPage> {
     // Obtain provider safely via addPostFrameCallback
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
+        if (!mounted) return;
+        // Accessing BuildContext here is safe because this callback runs
+        // synchronously after the first frame; suppress the analyzer info.
+        // ignore: use_build_context_synchronously
         final provider = Provider.of<GalleryProvider>(context, listen: false);
         provider.loadMore();
       } catch (_) {
@@ -59,15 +63,18 @@ class _GalleryPageState extends State<GalleryPage> {
               tooltip: 'Search images',
               icon: const Icon(Icons.search),
               onPressed: () async {
+                // Capture the provider before awaiting to avoid using
+                // BuildContext across async gaps.
+                final provider = Provider.of<GalleryProvider>(
+                  context,
+                  listen: false,
+                );
                 final result = await showSearch<String?>(
                   context: context,
                   delegate: _SimpleSearchDelegate(),
                 );
                 if (result != null) {
-                  Provider.of<GalleryProvider>(
-                    context,
-                    listen: false,
-                  ).setQuery(result);
+                  provider.setQuery(result);
                 }
               },
             ),
@@ -124,23 +131,24 @@ class _GalleryPageState extends State<GalleryPage> {
                                     fit: BoxFit.cover,
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
-                                          if (loadingProgress == null)
+                                          if (loadingProgress == null) {
                                             return child;
+                                          }
                                           return Image.asset(
                                             'assets/placeholder.png',
                                             fit: BoxFit.cover,
                                           );
                                         },
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Container(
-                                              color: Colors.grey[300],
-                                              child: const Icon(
-                                                Icons.broken_image,
-                                                size: 48,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[300],
+                                        child: const Icon(
+                                          Icons.broken_image,
+                                          size: 48,
+                                          color: Colors.grey,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ),
@@ -176,14 +184,19 @@ class _GalleryPageState extends State<GalleryPage> {
             // If provider exists, use it (same behavior as before)
             final items = gp.filtered;
             if (items.isEmpty && !gp.loadingMore) {
+              // Use a center-constrained column to avoid overflow on small
+              // devices when the keyboard or other UI is visible.
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.inbox, size: 64, color: Colors.grey),
-                    SizedBox(height: 12),
-                    Text('No images found', style: TextStyle(fontSize: 16)),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.inbox, size: 64, color: Colors.grey),
+                      SizedBox(height: 12),
+                      Text('No images found', style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
               );
             }
@@ -216,22 +229,24 @@ class _GalleryPageState extends State<GalleryPage> {
                                   fit: BoxFit.cover,
                                   loadingBuilder:
                                       (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
+                                        if (loadingProgress == null) {
                                           return child;
+                                        }
                                         return Image.asset(
                                           'assets/placeholder.png',
                                           fit: BoxFit.cover,
                                         );
                                       },
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Container(
-                                        color: Colors.grey[300],
-                                        child: const Icon(
-                                          Icons.broken_image,
-                                          size: 48,
-                                          color: Colors.grey,
-                                        ),
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey[300],
+                                      child: const Icon(
+                                        Icons.broken_image,
+                                        size: 48,
+                                        color: Colors.grey,
                                       ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
