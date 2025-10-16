@@ -2,6 +2,9 @@
 # Submission Pertama - Flutter Pemula
 
 Submission pertama dari kelas **Flutter Pemula** Dicoding.  
+
+![CI](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter-test.yml/badge.svg)
+
 Proyek ini berupa aplikasi Flutter sederhana yang dibuat untuk menguji pemahaman dasar, meliputi:
 
 - Penggunaan widget dasar
