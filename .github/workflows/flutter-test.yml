@@ -17,7 +17,10 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          # Pin a known stable Flutter SDK version to avoid runner/channel resolution
+          # issues on some hosted images. Update this value if you need a newer SDK.
+          flutter-version: '3.10.5'
+          channel: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
