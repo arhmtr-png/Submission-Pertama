@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:submission_pertama/screens/gallery_page.dart';
+import 'package:submission_pertama/main.dart';
 
 void main() {
   testWidgets('Gallery loads items and filters', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: GalleryPage()));
+    await tester.pumpWidget(const AppRoot());
     await tester.pumpAndSettle();
+
+    // Navigate to gallery route so providers defined in AppRoot are available
+    final nav = find.byType(Navigator);
+    if (nav.evaluate().isNotEmpty) {
+      Navigator.of(tester.element(nav)).pushNamed('/gallery');
+      await tester.pumpAndSettle();
+    } else {
+      // Fallback: pump GalleryPage directly wrapped in MaterialApp
+      await tester.pumpWidget(const MaterialApp(home: GalleryPage()));
+      await tester.pumpAndSettle();
+    }
 
     // Initially should have some items
     await tester.pumpAndSettle();

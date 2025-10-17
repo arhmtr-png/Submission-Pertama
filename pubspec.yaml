@@ -17,17 +17,38 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  # Require a Dart SDK compatible with Flutter 4.x. If CI runner provides
+  # a Flutter 4.x stable channel, this constraint will allow the restored
+  # plugins (workmanager, flutter_local_notifications) to be resolved.
+  sdk: '>=3.9.2 <5.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  # Use an older cupertino_icons compatible with the runner's Dart SDK (3.0.5)
+  # to allow CI dependency resolution to succeed. This can be bumped later
+  # when CI uses a newer Flutter/Dart SDK.
+  cupertino_icons: ^1.0.2
+  http: ^0.13.6
+  provider: ^6.0.5
+  google_fonts: ^4.0.4
+  sqflite: ^2.2.8
+  # Keep path compatible with the Flutter SDK on CI (flutter_test bundles path 1.8.3)
+  path: ^1.8.3
+  shared_preferences: ^2.1.1
+  # Background scheduling and local notifications (re-added now that the
+  # CI workflow requests Flutter 4.x). These packages target newer Dart/AGP
+  # and require Android embedding v2 — ensure android project is migrated.
+  workmanager: ^0.9.0+3
+  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications_linux: ^3.0.0+1
+  # (dependencies above are the required packages; duplicates were removed)
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  # flutter_lints removed temporarily for CI compatibility (runner Dart SDK is older).
+  # Re-add a matching version locally when upgrading the CI Flutter SDK.
 
 flutter:
   uses-material-design: true

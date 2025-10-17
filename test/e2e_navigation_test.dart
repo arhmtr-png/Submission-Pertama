@@ -8,7 +8,7 @@ void main() {
   testWidgets('E2E navigation flow Home -> Login -> Results -> Gallery -> Error', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const SubmissionPertamaApp());
+    await tester.pumpWidget(const AppRoot());
     await tester.pumpAndSettle();
 
     // Home -> Login

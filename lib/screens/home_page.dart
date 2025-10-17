@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
+import '../src/providers/settings_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,6 +29,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth < 600 ? 20 : 28,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -34,7 +38,7 @@ class HomePage extends StatelessWidget {
                       'Proyek sederhana untuk mempelajari widget statis dan dinamis, navigasi, dan layout responsif.',
                       style: TextStyle(
                         fontSize: screenWidth < 600 ? 14 : 16,
-                        color: Colors.grey[800],
+                        color: Colors.black87,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -83,6 +87,61 @@ class HomePage extends StatelessWidget {
                             Navigator.pushNamed(context, '/gallery'),
                         child: const Text('Open Gallery'),
                       ),
+                    ),
+                    const SizedBox(height: 12),
+                    if (kDebugMode) ...[
+                      SizedBox(
+                        width: screenWidth < 600 ? double.infinity : 300,
+                        height: 44,
+                        child: ElevatedButton(
+                          key: const Key('home_open_dev'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orangeAccent,
+                          ),
+                          onPressed: () => Navigator.pushNamed(context, '/dev'),
+                          child: const Text('Open Dev Tools'),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                    const SizedBox(height: 24),
+                    // Settings toggles — tolerant when SettingsProvider isn't
+                    // available (some tests pump this page in isolation).
+                    Builder(
+                      builder: (context) {
+                        SettingsProvider? sp;
+                        try {
+                          sp = Provider.of<SettingsProvider>(context);
+                        } catch (_) {
+                          sp = null;
+                        }
+
+                        final isDark = sp?.isDark ?? false;
+                        final daily = sp?.dailyReminderActive ?? false;
+
+                        return Column(
+                          children: [
+                            SwitchListTile.adaptive(
+                              title: const Text('Dark Theme'),
+                              subtitle: const Text('Use dark mode for the app'),
+                              value: isDark,
+                              onChanged: sp != null
+                                  ? (v) => sp!.setDarkTheme(v)
+                                  : null,
+                            ),
+                            SwitchListTile.adaptive(
+                              title: const Text('Daily Reminder'),
+                              subtitle: const Text(
+                                'Receive a daily reminder at 11:00',
+                              ),
+                              value: daily,
+                              onChanged: sp != null
+                                  ? (v) => sp!.setDailyReminderActive(v)
+                                  : null,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),

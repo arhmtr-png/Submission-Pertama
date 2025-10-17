@@ -2,6 +2,9 @@
 # Submission Pertama - Flutter Pemula
 
 Submission pertama dari kelas **Flutter Pemula** Dicoding.  
+
+![CI](https://github.com/arhmtr-png/Submission-Pertama/actions/workflows/flutter-test.yml/badge.svg)
+
 Proyek ini berupa aplikasi Flutter sederhana yang dibuat untuk menguji pemahaman dasar, meliputi:
 
 - Penggunaan widget dasar
@@ -106,6 +109,34 @@ Run widget tests:
 ```
 flutter test
 ```
+
+### Testing notifications on Android (Android 13+)
+
+To test local notifications (the app uses `flutter_local_notifications`) on Android 13 and newer you need both the manifest permission and a runtime permission grant.
+
+1. Manifest: the app already includes the permission in `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+```
+
+2. Runtime permission: Android 13 requires that apps request the `POST_NOTIFICATIONS` permission at runtime. The app's `NotificationService.init()` already attempts to request this permission when running on Android.
+
+3. Testing flow on an emulator/device:
+
+ - Install the app on an Android 13+ emulator or device:
+
+```powershell
+flutter run -d emulator-5554
+```
+
+ - Open the app. If the runtime permission dialog appears, accept it.
+ - In debug builds the Home page shows a "Send Test Notification" button (visible only in debug mode). Tap it to send an immediate test notification.
+ - If you don't see the button, make sure you're running a debug build (the button is hidden in release builds).
+
+Notes:
+ - If notifications still don't appear, check the system notification settings for the app and ensure notifications are enabled.
+ - On some emulator images you may need to configure the system notification channel or restart the emulator to see notifications reliably.
 
 ## Submission
 - ZIP the project or push to GitHub.
