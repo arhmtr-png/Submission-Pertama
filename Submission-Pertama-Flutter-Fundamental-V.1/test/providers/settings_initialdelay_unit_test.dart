@@ -1,6 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/providers/settings_provider.dart';
-
 Duration delayToNext11am(DateTime now) {
   final today11 = DateTime(now.year, now.month, now.day, 11);
   final next = now.isBefore(today11)
