@@ -1,0 +1,35 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - Flutter-Fundamental-V.1
+      - main
+  pull_request:
+    branches:
+      - Flutter-Fundamental-V.1
+      - main
+
+jobs:
+  analyze-and-test:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.2.0
+        with:
+          flutter-version: '3.10.6'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Static analysis
+        run: flutter analyze
+
+      - name: Run unit & widget tests
+        run: flutter test --coverage
+```

@@ -1,0 +1,38 @@
+﻿# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+**/build/
+**/.dart_tool/
+**/.pub/
+
+# Android/Gradle
+.android/
+.gradle/
+local.properties
+**/app/build/
+**/android/.gradle/
+
+# iOS
+Pods/
+ios/Pods/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Misc
+*.log
+*.lock
+*.jar
+*.keystore
+.DS_Store
+
+# Archive / temp
+*.zip
+*.tar.gz
+*.rar
+__pycache__/
+venv/
