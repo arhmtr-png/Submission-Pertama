@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fundamental/src/services/settings_service.dart';
+import 'package:submission_pertama/src/services/settings_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -36,3 +36,4 @@ void main() {
     });
   });
 }
+

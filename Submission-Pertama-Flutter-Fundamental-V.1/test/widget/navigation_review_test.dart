@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
 import 'fake_api_service.dart';
-import 'package:fundamental/src/pages/restaurant_detail_page.dart';
+import 'package:submission_pertama/src/pages/restaurant_detail_page.dart';
 
 void main() {
   testWidgets('List -> Detail navigation and submit review', (tester) async {
@@ -56,3 +56,4 @@ void main() {
     expect(find.text('Great!'), findsWidgets);
   });
 }
+

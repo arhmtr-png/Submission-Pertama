@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:fundamental/src/pages/restaurant_list_page.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/src/pages/restaurant_list_page.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
 import 'fake_api_service.dart';
-import 'package:fundamental/src/pages/restaurant_detail_page.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/pages/restaurant_detail_page.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
 
 void main() {
   testWidgets('List page shows items and navigates to detail', (tester) async {
@@ -116,3 +116,4 @@ void main() {
     expect(find.text('Nice'), findsWidgets);
   });
 }
+

@@ -1,6 +1,6 @@
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
-import 'package:fundamental/src/services/api_service.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
 
 class FakeApiService implements ApiService {
   final List<RestaurantSummary> summaries;
@@ -53,3 +53,4 @@ class FakeApiService implements ApiService {
     return false;
   }
 }
+

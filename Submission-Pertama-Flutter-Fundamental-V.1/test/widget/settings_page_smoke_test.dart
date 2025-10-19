@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:fundamental/src/pages/settings_page.dart';
-import 'package:fundamental/src/providers/settings_provider.dart';
-import 'package:fundamental/src/services/settings_service.dart';
+import 'package:submission_pertama/src/pages/settings_page.dart';
+import 'package:submission_pertama/src/providers/settings_provider.dart';
+import 'package:submission_pertama/src/services/settings_service.dart';
 
 void main() {
   testWidgets('Settings page has theme toggle and test notification button', (
@@ -39,3 +39,4 @@ void main() {
     }
   });
 }
+

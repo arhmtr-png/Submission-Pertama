@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:fundamental/src/data/database_helper.dart';
-import 'package:fundamental/src/models/restaurant_model.dart';
+import 'package:submission_pertama/src/data/database_helper.dart';
+import 'package:submission_pertama/src/models/restaurant_model.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
@@ -87,3 +87,4 @@ void main() {
     });
   });
 }
+

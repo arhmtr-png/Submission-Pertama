@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fundamental/main.dart' as app;
-import 'package:fundamental/src/services/api_service.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/main.dart' as app;
+import 'package:submission_pertama/src/services/api_service.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
 
 // A simple integration test that starts the app, waits for the list, taps the first item,
 // and tries to submit a review using the real ApiService. In CI this will run with the
@@ -49,3 +49,4 @@ void main() {
     expect(find.text('Review submitted').hitTestable(), findsWidgets);
   });
 }
+

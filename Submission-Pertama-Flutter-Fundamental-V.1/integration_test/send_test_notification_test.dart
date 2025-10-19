@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter/material.dart';
-import 'package:fundamental/main.dart' as app;
-import 'package:fundamental/src/pages/settings_page.dart';
+import 'package:submission_pertama/main.dart' as app;
+import 'package:submission_pertama/src/pages/settings_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -58,3 +58,4 @@ void main() {
     timeout: const Timeout(Duration(seconds: 60)),
   );
 }
+
