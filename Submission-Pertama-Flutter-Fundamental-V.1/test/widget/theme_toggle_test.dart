@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:fundamental/main.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
-import 'package:fundamental/src/services/api_service.dart';
+import 'package:submission_pertama/main.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
 
 void main() {
   testWidgets('Theme toggling keeps text visible', (WidgetTester tester) async {
@@ -49,3 +49,4 @@ void main() {
     expect(titleFinder, findsOneWidget);
   });
 }
+

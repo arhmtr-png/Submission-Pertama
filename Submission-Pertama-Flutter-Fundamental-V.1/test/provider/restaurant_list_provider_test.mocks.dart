@@ -5,8 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:fundamental/src/models/restaurant_model.dart' as _i4;
-import 'package:fundamental/src/repositories/restaurant_repository.dart' as _i2;
+import 'package:submission_pertama/src/models/restaurant_model.dart' as _i4;
+import 'package:submission_pertama/src/repositories/restaurant_repository.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -77,3 +77,4 @@ class MockRestaurantRepository extends _i1.Mock
           )
           as _i3.Future<bool>);
 }
+

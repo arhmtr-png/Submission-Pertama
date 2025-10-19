@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart' show Constraints;
-import 'package:fundamental/src/services/settings_service.dart';
-import 'package:fundamental/src/providers/settings_provider.dart';
-import 'package:fundamental/src/services/workmanager_wrapper.dart';
+import 'package:submission_pertama/src/services/settings_service.dart';
+import 'package:submission_pertama/src/providers/settings_provider.dart';
+import 'package:submission_pertama/src/services/workmanager_wrapper.dart';
 
 class _FakeWorkmanager implements WorkmanagerWrapper {
   bool registered = false;
@@ -67,3 +67,4 @@ void main() {
     );
   });
 }
+

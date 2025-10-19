@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
-import 'package:fundamental/src/pages/restaurant_list_page.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/services/api_service.dart';
+import 'package:submission_pertama/src/pages/restaurant_list_page.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
 
 class FakeApiService extends ApiService {
   @override
@@ -48,3 +48,4 @@ void main() {
     expect(find.textContaining('A long restaurant name'), findsOneWidget);
   });
 }
+

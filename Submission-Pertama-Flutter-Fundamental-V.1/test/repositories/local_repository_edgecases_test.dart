@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/repositories/local_restaurant_repository.dart';
-import 'package:fundamental/src/models/restaurant_model.dart';
-import 'package:fundamental/src/services/api_service.dart';
-import 'package:fundamental/src/data/database_helper.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/repositories/local_restaurant_repository.dart';
+import 'package:submission_pertama/src/models/restaurant_model.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
+import 'package:submission_pertama/src/data/database_helper.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
 
 class FakeApiServiceEmpty implements ApiService {
   @override
@@ -108,3 +108,4 @@ void main() {
     });
   });
 }
+

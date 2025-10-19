@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
-import 'package:fundamental/src/providers/restaurant_detail_provider.dart';
-import 'package:fundamental/src/services/api_service.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/src/providers/restaurant_detail_provider.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
 import 'widget/fake_api_service.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
 
 class ThrowingApi implements ApiService {
   @override
@@ -87,3 +87,4 @@ void main() {
     expect(detailProvider.detail?.customerReviews.last.name, 'Alice');
   });
 }
+

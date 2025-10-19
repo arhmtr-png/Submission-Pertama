@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/providers/favorite_provider.dart';
-import 'package:fundamental/src/models/restaurant_model.dart';
-import 'package:fundamental/src/repositories/restaurant_repository.dart';
+import 'package:submission_pertama/src/providers/favorite_provider.dart';
+import 'package:submission_pertama/src/models/restaurant_model.dart';
+import 'package:submission_pertama/src/repositories/restaurant_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // Notifications tests are skipped in this suite because plugin initialization requires a
 // real platform. Use device-level manual testing or integration tests on an emulator/device.
@@ -59,3 +59,4 @@ void main() {
   // Skipping notification platform test here because flutter_local_notifications requires
   // a platform implementation that is not available in the unit test environment.
 }
+

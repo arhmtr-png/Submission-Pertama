@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fundamental/src/providers/restaurant_provider.dart';
-import 'package:fundamental/src/services/api_service.dart';
-import 'package:fundamental/src/models/restaurant_summary.dart';
-import 'package:fundamental/src/models/restaurant_detail.dart';
+import 'package:submission_pertama/src/providers/restaurant_provider.dart';
+import 'package:submission_pertama/src/services/api_service.dart';
+import 'package:submission_pertama/src/models/restaurant_summary.dart';
+import 'package:submission_pertama/src/models/restaurant_detail.dart';
 
 class _FailingApi implements ApiService {
   @override
@@ -41,3 +41,4 @@ void main() {
     expect(provider.searchResults, isEmpty);
   });
 }
+

@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:fundamental/src/providers/restaurant_list_provider.dart';
-import 'package:fundamental/src/repositories/restaurant_repository.dart';
-import 'package:fundamental/src/models/restaurant_model.dart';
-import 'package:fundamental/src/repositories/exceptions.dart';
+import 'package:submission_pertama/src/providers/restaurant_list_provider.dart';
+import 'package:submission_pertama/src/repositories/restaurant_repository.dart';
+import 'package:submission_pertama/src/models/restaurant_model.dart';
+import 'package:submission_pertama/src/repositories/exceptions.dart';
 
 import 'restaurant_list_provider_test.mocks.dart';
 
@@ -58,3 +58,4 @@ void main() {
     },
   );
 }
+

@@ -3,9 +3,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:fundamental/src/providers/favorite_provider.dart';
-import 'package:fundamental/src/repositories/restaurant_repository.dart';
-import 'package:fundamental/src/models/restaurant_model.dart';
+import 'package:submission_pertama/src/providers/favorite_provider.dart';
+import 'package:submission_pertama/src/repositories/restaurant_repository.dart';
+import 'package:submission_pertama/src/models/restaurant_model.dart';
 
 import 'favorite_provider_test.mocks.dart';
 
@@ -140,3 +140,4 @@ void main() {
     },
   );
 }
+
